@@ -863,6 +863,7 @@ h2.title .ko { font-family: var(--f-body); font-weight: 600; }
       a.setAttribute("data-id", v.id);
       a.innerHTML =
         '<img class="pf-thumb" loading="lazy" alt="' + v.title + '" src="' + thumb(v.id) + '" ' +
+        'onload="if(this.naturalWidth<=120){this.onload=null;this.src=\'' + thumb(v.id, "sddefault") + '\'}" ' +
         'onerror="this.onerror=null;this.src=\'' + thumb(v.id, "hqdefault") + '\'">' +
         '<span class="pf-play"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>' +
         '<div class="pf-overlay"><span class="pf-cat">' + v.en + '</span><span class="pf-title">' + v.title + '</span></div>';
