@@ -3,7 +3,7 @@
 (function(){
 "use strict";
 var root=document.documentElement;
-var HERO_VIDEO="media/hero.mp4";           /* optional: short muted loop placed behind the lens */
+var HERO_VIDEO="media/hero.mp4",HERO_VIDEO_M="media/hero_m.mp4"; /* phones try the lighter cut first, fall back to hero.mp4 */           /* optional: short muted loop placed behind the lens */
 var outer=document.getElementById("heroOuter"),hero=document.getElementById("hero"),cv=document.getElementById("gl");
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function fail(){root.classList.add("nogl");}
@@ -120,7 +120,7 @@ function layout(){
   renderer.setPixelRatio(dpr);renderer.setSize(W,H,false);
   var b=renderer.getDrawingBufferSize?renderer.getDrawingBufferSize(new THREE.Vector2()):new THREE.Vector2(W*dpr,H*dpr);
   U.uRes.value.set(b.x,b.y);
-  if(aspect<1.1){U.uC.value.set(0,.42);U.uR.value=Math.min(.46,aspect*.47);}
+  if(aspect<1.1){U.uC.value.set(0,.2);U.uR.value=Math.min(.5,aspect*.6);}
   else{U.uC.value.set(Math.min(aspect*.44,1.1),.02);U.uR.value=.46;}
 }
 /* light / pointer */
@@ -157,13 +157,13 @@ function tryVideo(){
     var go=function(){["touchstart","pointerdown","keydown","scroll"].forEach(function(e){removeEventListener(e,go,true);});play();};
     ["touchstart","pointerdown","keydown","scroll"].forEach(function(e){addEventListener(e,go,{capture:true,passive:true});});
   }
-  v.addEventListener("error",function(){vidOn=false;},{once:true});
+  var triedFb=false;v.addEventListener("error",function(){if(small&&!triedFb){triedFb=true;v.src=HERO_VIDEO;v.load();return;}vidOn=false;});
   v.addEventListener("loadedmetadata",function(){try{v.currentTime=VID_START;}catch(e){}});
   /* loop only the cinematic range */
   v.addEventListener("timeupdate",function(){if(v.duration&&v.currentTime>=v.duration-.12){try{v.currentTime=VID_START;}catch(e){}v.play&&v.play().catch(function(){});}});
   v.addEventListener("ended",function(){try{v.currentTime=VID_START;}catch(e){}v.play().catch(function(){});});
   v.addEventListener("canplay",function(){if(v.currentTime<VID_START-.1){try{v.currentTime=VID_START;}catch(e){}}play();},{once:true});
-  v.src=HERO_VIDEO;
+  v.src=small?HERO_VIDEO_M:HERO_VIDEO;
 }
 
 /* loop control */
