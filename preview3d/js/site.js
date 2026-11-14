@@ -64,7 +64,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&m.classList
 
 /* showreel placeholder -> YouTube id */
 var fr=document.getElementById("srFrame");
-if(fr&&SHOWREEL_YT){
+if(fr&&SHOWREEL_YT){var _s=document.getElementById("showreel");if(_s)_s.hidden=false;
   fr.setAttribute("data-yt",SHOWREEL_YT);fr.classList.add("live");
   var hostEl=document.getElementById("srHost");
   hostEl.innerHTML='<img alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" src="https://img.youtube.com/vi/'+SHOWREEL_YT+'/maxresdefault.jpg"><button type="button" class="pi" style="position:absolute;inset:0" aria-label="쇼릴 재생"><span class="pi-play" style="opacity:1;transform:none"></span></button>';

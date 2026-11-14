@@ -331,3 +331,4 @@ html:not(.js) .rv{opacity:1;transform:none}
 }
 
 .shotm .rv{opacity:1;transform:none;transition:none}.shotm [data-h]{opacity:1;transform:none;transition:none}
+[hidden]{display:none!important}
