@@ -436,3 +436,38 @@ html:not(.js) .rv{opacity:1;transform:none}
   .hero-cap{top:auto;bottom:calc(76px + env(safe-area-inset-bottom))}
   .hero-cap::before{display:block;height:260px;bottom:calc((76px + env(safe-area-inset-bottom)) * -1)}
 }
+
+/* ===== detail pages (work/, tools/) + short-preview links ===== */
+.more{margin-top:clamp(36px,5vw,64px)}
+.nav a[aria-current=page],.mnav a[aria-current=page]{color:var(--ink)}
+.pg-head{padding-top:clamp(120px,14vw,190px)}
+.pg-head h1{font-size:clamp(36px,6vw,84px);line-height:1.1;letter-spacing:-.045em}
+.dp .sec:last-of-type{padding-bottom:clamp(96px,12vw,180px)}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:clamp(28px,4vw,48px)}
+.chip{height:40px;padding:0 20px;border:1px solid var(--line);border-radius:999px;font-size:13px;letter-spacing:.02em;color:var(--mute);transition:color .5s var(--ease),border-color .5s var(--ease),background .5s var(--ease)}
+.chip:hover{color:var(--ink);border-color:rgba(243,238,228,.4)}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(36px,4vw,60px) clamp(16px,2vw,28px)}
+.pg .pi[hidden]{display:none}
+.tools{display:flex;flex-direction:column;gap:clamp(72px,10vw,150px)}
+.tool{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(28px,5vw,88px);align-items:start;scroll-margin-top:96px}
+.tool-fig{position:relative;min-width:0;order:2}
+.tool-txt{order:1;min-width:0}
+.tool h2{font-size:clamp(28px,3.2vw,48px);letter-spacing:-.04em;line-height:1.2;margin-bottom:clamp(20px,2.4vw,32px)}
+.tool h3{font-size:11px;letter-spacing:.26em;color:var(--dim);font-weight:500;margin:22px 0 8px}
+.tool-txt p:not(.lab){color:var(--mute);font-size:clamp(14px,1.1vw,16px);max-width:34em}
+.tool-link{margin-top:20px}.tool-link a{border-bottom:1px solid var(--line);padding-bottom:2px;font-size:14px}
+.tool-cta{margin-top:clamp(80px,11vw,160px)}
+@media (max-width:1024px){
+  .pg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tool{grid-template-columns:minmax(0,1fr)}
+  .tool-fig{order:1}.tool-txt{order:2}
+}
+@media (max-width:760px){
+  .pg{grid-template-columns:minmax(0,1fr)}
+  .pg-head{padding-top:104px}
+  .pg-head h1{font-size:clamp(30px,9vw,40px)}
+  .chip{height:44px}
+  .pg .pi .pi-img{aspect-ratio:16/9}
+  .more .cta{width:100%;justify-content:space-between}
+}
