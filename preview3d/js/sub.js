@@ -11,8 +11,9 @@ burger.addEventListener("click",function(){setMenu(!mnav.classList.contains("ope
 mnav.addEventListener("click",function(e){if(e.target.closest("a"))setMenu(false);});
 /* work */
 var pg=$("pg");
-if(pg&&window.YR_V){
-  var V=window.YR_V,CATS=[["all","전체"],["brand","광고 · 브랜드"],["product","제품"],["vh","버추얼 휴먼"],["short","숏폼"]];
+var LIVE=document.body.getAttribute("data-list")==="live";
+if(pg&&(LIVE?window.YR_L:window.YR_V)){
+  var V=LIVE?window.YR_L:window.YR_V,CATS=[["all","전체"],["brand","광고 · 브랜드"],["product","제품"],["vh","버추얼 휴먼"],["short","숏폼"]];
   var m=$("modal"),host=$("mhost"),lastFocus=null;
   var openM=function(id,cat,t,d){lastFocus=document.activeElement;
     host.innerHTML='<iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" title="'+t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
@@ -21,7 +22,15 @@ if(pg&&window.YR_V){
   var closeM=function(){m.classList.remove("open");host.innerHTML="";document.body.style.overflow="";if(lastFocus&&lastFocus.focus)lastFocus.focus();};
   $("mclose").addEventListener("click",closeM);
   m.addEventListener("click",function(e){if(e.target===m)closeM();});
-  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&m.classList.contains("open"))closeM();});
+  document.addEventListener("keydown",function(e){
+    if(!m.classList.contains("open"))return;
+    if(e.key==="Escape"){closeM();return;}
+    if(e.key!=="Tab")return;
+    var f=[$("mclose")],fr=host.querySelector("iframe");if(fr)f.push(fr);
+    var i=f.indexOf(document.activeElement);
+    if(e.shiftKey){if(i<=0){e.preventDefault();f[f.length-1].focus();}}
+    else if(i===-1||i===f.length-1){e.preventDefault();f[0].focus();}
+  });
   var items=V.map(function(v,i){
     var b=document.createElement("button");b.type="button";b.className="pi";b.setAttribute("aria-label",v[3]+" 재생");
     var src="https://img.youtube.com/vi/"+v[0]+"/maxresdefault.jpg";
@@ -33,6 +42,7 @@ if(pg&&window.YR_V){
     pg.appendChild(b);return b;
   });
   var chips=$("chips");
+  if(LIVE&&chips)chips.hidden=true;
   CATS.forEach(function(c){
     var n=c[0]==="all"?V.length:V.filter(function(v){return v[5]===c[0];}).length;
     if(!n)return; /* hide chips with no works */
