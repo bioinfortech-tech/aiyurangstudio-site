@@ -274,6 +274,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   .pc-hint{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
   /* services: 2-col grid */
   .sv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
+  .sv li:last-child:nth-child(odd){grid-column:1/-1}
   .sv li{display:block;padding:20px 12px 20px 0;border-bottom:1px solid var(--line)}
   .sv li:nth-child(odd){border-right:1px solid var(--line);padding-right:14px}
   .sv li:nth-child(even){padding-left:16px}
