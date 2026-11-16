@@ -107,8 +107,42 @@ document.addEventListener("click",function(e){
   addEventListener("scroll",upd,{passive:true});addEventListener("yr-modal",upd);burger.addEventListener("click",function(){setTimeout(upd,0);});mnav.addEventListener("click",function(){setTimeout(upd,0);});upd();
 })();
 
+
+/* in-house tools: tabs, autoplay, review pin */
+(function(){
+  var tl=document.getElementById("tl");if(!tl)return;
+  var tabs=[].slice.call(tl.querySelectorAll("[role=tab]")),panels=tabs.map(function(t){return document.getElementById(t.getAttribute("aria-controls"));});
+  var cur=0,timer=0,inView=false,touched=false,DUR=7000,rm=document.documentElement.classList.contains("rm");
+  function sel(i,user){
+    cur=(i+tabs.length)%tabs.length;
+    tabs.forEach(function(t,k){var on=k===cur;t.setAttribute("aria-selected",on);t.tabIndex=on?0:-1;panels[k].hidden=!on;});
+    tl.classList.remove("run");void tl.offsetWidth;
+    if(user){touched=true;stopT();}else if(inView&&!touched)tl.classList.add("run");
+    if(!user)schedule();
+  }
+  function stopT(){clearTimeout(timer);timer=0;tl.classList.remove("run");}
+  function schedule(){clearTimeout(timer);if(rm||touched||!inView)return;tl.style.setProperty("--dur",DUR+"ms");tl.classList.add("run");timer=setTimeout(function(){sel(cur+1,false);},DUR);}
+  tabs.forEach(function(t,k){
+    t.addEventListener("click",function(){sel(k,true);});
+    t.addEventListener("keydown",function(e){var d=e.key==="ArrowDown"||e.key==="ArrowRight"?1:e.key==="ArrowUp"||e.key==="ArrowLeft"?-1:0;if(!d)return;e.preventDefault();sel(cur+d,true);tabs[cur].focus();});
+  });
+  if("IntersectionObserver" in window){new IntersectionObserver(function(es){inView=es[0].isIntersecting;if(inView)schedule();else{clearTimeout(timer);timer=0;tl.classList.remove("run");}},{threshold:.35}).observe(tl);}
+  /* editor waveform */
+  var wv=document.getElementById("wv"),NS="http://www.w3.org/2000/svg";
+  if(wv){for(var i=0;i<54;i++){var r=document.createElementNS(NS,"rect"),h=6+Math.abs(Math.sin(i*.9)*Math.cos(i*.31))*20;r.setAttribute("x",40+i*7.7);r.setAttribute("width",3);r.setAttribute("y",244-h/2);r.setAttribute("height",h);r.style.animationDelay=(i%9)*.15+"s";wv.appendChild(r);}}
+  /* review: click the frame to drop a timecode pin */
+  var fr=document.getElementById("rvFrame"),svg=document.getElementById("rvSvg"),pin=document.getElementById("rvPin"),head=document.getElementById("rvHead"),tc=document.getElementById("rvTc"),tx=document.getElementById("rvTxt");
+  var notes=["컷 길이 조정","색감 확인","자막 위치","BGM 볼륨"];var ni=0;
+  if(fr){fr.addEventListener("click",function(e){
+    var r=svg.getBoundingClientRect(),k=480/r.width,x=(e.clientX-r.left)*k,y=(e.clientY-r.top)*k;
+    x=Math.max(34,Math.min(x,336));y=Math.max(34,Math.min(y,170));
+    var sec=Math.round(Math.max(0,Math.min(1,(x-24)/432))*17);
+    pin.style.transform="translate("+x+"px,"+y+"px)";head.style.transform="translateX("+x+"px)";
+    tc.textContent="00:"+(sec<10?"0":"")+sec;tx.textContent=notes[ni++%notes.length];
+  });}
+})();
 /* reveal */
-var els=[].slice.call(document.querySelectorAll(".sh,.sv li,.st li,.ci,.form,.frame"));
+var els=[].slice.call(document.querySelectorAll(".sh,.sv li,.st li,.ci,.form,.frame,.tl,.tl-note"));
 els.forEach(function(e){e.classList.add("rv");});
 var all=[].slice.call(document.querySelectorAll(".rv"));
 if(!("IntersectionObserver" in window)||root.classList.contains("rm")){all.forEach(function(e){e.classList.add("in");});}

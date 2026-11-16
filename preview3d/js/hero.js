@@ -18,7 +18,7 @@ renderer.setClearColor(0x0B0B0D,1);
 var VS="void main(){gl_Position=vec4(position.xy,0.,1.);}";
 var FS=[
 "#ifdef GL_FRAGMENT_PRECISION_HIGH","precision highp float;","#else","precision mediump float;","#endif",
-"uniform vec2 uRes,uC,uL;uniform float uTime,uScroll,uR,uRip,uVid,uVA;uniform sampler2D uTex;",
+"uniform vec2 uRes,uC,uL;uniform float uTime,uScroll,uR,uRip,uVid,uVA,uFX;uniform sampler2D uTex;",
 "#define PI 3.14159265",
 "#define BG vec3(.043,.043,.051)",
 "float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}",
@@ -34,7 +34,7 @@ var FS=[
 " float t=smoothstep(0.,1.2,abs(d.x));",
 " return WARM*core*1.15+mix(WARM,COOL,t)*s1*1.15+COOL*s2*.16+WARM*rays*.12;}",
 "float poly(vec2 p,float n,float r){float a=atan(p.x,p.y)+PI;float s=2.*PI/n;return cos(floor(.5+a/s)*s-a)*length(p)-r;}",
-"vec3 vid(vec2 o){vec2 uv=vec2(.5)-o*vec2(.30,.5);return texture2D(uTex,uv).rgb;}",
+"vec3 vid(vec2 o){vec2 uv=vec2(.5+(uFX-.5),.5)-o*vec2(.30,.5);return texture2D(uTex,uv).rgb;}",
 "void main(){",
 " vec2 p=(gl_FragCoord.xy*2.-uRes)/uRes.y;",
 " float e=smoothstep(0.,1.,uScroll);",
@@ -108,15 +108,16 @@ var FS=[
 " vec3 pf=BG+field(p*.8,uL)*.55+vec3(.10,.09,.08)*(1.-.5*length(p));",
 " float ff=smoothstep(.55,.9,uScroll);",
 " if(por){",
-/* phones: lens fades, the heptagon itself grows into a centred 16:9 frame */
+/* phones: lens fades, the heptagon grows past the screen edges; the footage is cover-cropped (full height) around the focal x uFX */
 "  col=mix(col,BG,smoothstep(.12,.5,uScroll));",
 "  vec2 Cp=mix(uC,vec2(0.),smoothstep(0.,.8,uScroll));",
-"  float rp=mix(uR*.2,.78,pow(smoothstep(.12,.84,uScroll),1.25));",
+"  float rp=mix(uR*.2,1.7,pow(smoothstep(.12,.84,uScroll),1.25));",
 "  vec2 qq=rot(p-Cp,uTime*.045);",
 "  float sdp=poly(qq,7.,rp);float mp=smoothstep(.012,-.012,sdp);",
-"  vec2 lu=vec2(p.x/sa*.5+.5,p.y*.5*uVA/sa+.5);",
-"  float rk=smoothstep(.0,.004,.5-abs(lu.y-.5));",
-"  vec3 lv=mix(BG,mix(BG+field(p*.8,uL)*.4,texture2D(uTex,lu).rgb*.96,uVid),rk);",
+"  float hw=min(.5,.5*sa/uVA);float fx=clamp(uFX,hw,1.-hw);",
+"  vec2 lu=vec2(p.x*.5/uVA+fx,p.y*.5+.5);",
+"  vec3 lv=mix(BG+field(p*.8,uL)*.4,texture2D(uTex,lu).rgb*.96,uVid);",
+"  lv*=1.-.22*dot(p*.42,p*.42);",
 "  col=mix(col,lv,mp*smoothstep(.06,.26,uScroll));",
 " }else{",
 "  col=mix(col,mix(pf,fv,uVid),ff);",
@@ -129,7 +130,7 @@ var FS=[
 
 var scene=new THREE.Scene(),cam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 var dummy=new THREE.DataTexture(new Uint8Array([20,20,22,255]),1,1,THREE.RGBAFormat);dummy.needsUpdate=true;
-var U={uRes:{value:new THREE.Vector2(1,1)},uC:{value:new THREE.Vector2(.7,0)},uL:{value:new THREE.Vector2(.2,0)},uTime:{value:0},uScroll:{value:0},uR:{value:.46},uRip:{value:0},uVid:{value:0},uVA:{value:1.7778},uTex:{value:dummy}};
+var U={uRes:{value:new THREE.Vector2(1,1)},uC:{value:new THREE.Vector2(.7,0)},uL:{value:new THREE.Vector2(.2,0)},uTime:{value:0},uScroll:{value:0},uR:{value:.46},uRip:{value:0},uVid:{value:0},uVA:{value:1.7778},uFX:{value:.5},uTex:{value:dummy}};
 var mat=new THREE.ShaderMaterial({vertexShader:VS,fragmentShader:(small?"":"#define HQ\n")+FS,uniforms:U,depthTest:false,depthWrite:false});
 scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),mat));
 
@@ -165,6 +166,15 @@ function applyText(p){
   content.style.visibility=o<=0?"hidden":"visible";
 }
 
+/* time-based horizontal focal point (0..1 of video width) for portrait cover-crop; hero.mp4 17s.
+   0-4s snack/almonds, 4-7s burger, 7-8s man w/ bottle (right), 8-12s beer/cosmetic, 12-14s molecule (left), 14-17s portrait. Landscape stays .5 */
+var FOCUS=[[0,.5],[1.4,.5],[2.6,.6],[3.8,.62],[4.4,.5],[6.9,.5],[7.3,.7],[8.2,.58],[9,.5],[11.8,.5],[12.5,.45],[13.4,.36],[14.4,.5],[17,.5]];
+function focusAt(t){
+  if(t<=FOCUS[0][0])return FOCUS[0][1];
+  for(var i=1;i<FOCUS.length;i++){if(t<=FOCUS[i][0]){var a=FOCUS[i-1],b=FOCUS[i],k=(t-a[0])/(b[0]-a[0]);k=k*k*(3-2*k);return a[1]+(b[1]-a[1])*k;}}
+  return FOCUS[FOCUS.length-1][1];
+}
+var fxNow=.5,_ft=/[?&]ft=([\d.]+)/.exec(location.search);
 /* optional video behind the lens */
 var vtex=null,vel=null,vidOn=false;
 var VID_START=0;var _vt=/vt=([\d.]+)/.exec(location.search);if(_vt)VID_START=+_vt[1];
@@ -199,6 +209,8 @@ function frame(now){
   if(idle){var c=U.uC.value;tgt.set(c.x+Math.cos(tt*.17)*.55*aspect*.55-.05,c.y+Math.sin(tt*.13)*.3);}
   last.copy(cur);cur.x+=(tgt.x-cur.x)*(1-Math.exp(-dt*(idle?1.0:2.4)));cur.y+=(tgt.y-cur.y)*(1-Math.exp(-dt*(idle?1.0:2.4)));
   var sp=cur.distanceTo(last)/Math.max(dt,.001);speed+=(Math.min(1,sp*.5)-speed)*(1-Math.exp(-dt*3));
+  var fxT=.5;if(aspect<1){var vt=vel&&vel.readyState>=2?vel.currentTime:0;fxT=focusAt(_ft?+_ft[1]:vt);}
+  fxNow=_ft?fxT:fxNow+(fxT-fxNow)*(1-Math.exp(-dt*3.2));U.uFX.value=fxNow;root.style.setProperty("--fx",(fxNow*100).toFixed(1)+"%");
   U.uL.value.copy(cur);U.uRip.value=.25+speed;U.uTime.value=tt;U.uScroll.value=prog;
   if(vidOn&&vel&&vel.readyState>=2){vtex.needsUpdate=true;U.uVid.value+=(1-U.uVid.value)*(1-Math.exp(-dt*(/vidsnap/.test(location.search)?30:1.2)));if(/vidsnap/.test(location.search)&&!window._vl){window._vl=1;console.log("VIDEO LIVE "+vel.videoWidth+"x"+vel.videoHeight+" uVA="+U.uVA.value+" res="+U.uRes.value.x+"x"+U.uRes.value.y);}}
   applyText(prog);

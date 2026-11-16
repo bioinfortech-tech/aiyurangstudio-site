@@ -3,8 +3,8 @@
 <head><meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>유랑스튜디오 — AI Film Studio</title>
-<meta name="description" content="유랑스튜디오. 상상만 하던 장면을 AI 필름으로 만드는 스튜디오.">
+<title>유랑스튜디오 — 영상 + 소프트웨어 스튜디오</title>
+<meta name="description" content="유랑스튜디오. 영상을 만들고, 영상을 만드는 도구까지 직접 만드는 영상 + 소프트웨어 스튜디오.">
 <meta name="theme-color" content="#0B0B0D">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,13 +19,13 @@
 <header class="hdr" id="hdr">
   <a class="logo" href="#top" aria-label="유랑스튜디오 처음으로"><span>YURANG</span><i></i><span>STUDIO</span></a>
   <nav class="nav" aria-label="주 메뉴">
-    <a href="#work">작품</a><a href="#services">서비스</a><a href="#process">과정</a><a href="#contact">문의</a>
+    <a href="#work">작품</a><a href="#services">서비스</a><a href="#tools">도구</a><a href="#process">과정</a><a href="#contact">문의</a>
     <a class="fb" href="https://review.aiyurangstudio.com" target="_blank" rel="noopener">피드백<sup>↗</sup></a>
   </nav>
   <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
 </header>
 <nav class="mnav" id="mnav" aria-label="모바일 메뉴">
-  <a href="#work">작품</a><a href="#services">서비스</a><a href="#process">과정</a><a href="#contact">문의</a>
+  <a href="#work">작품</a><a href="#services">서비스</a><a href="#tools">도구</a><a href="#process">과정</a><a href="#contact">문의</a>
   <a href="https://review.aiyurangstudio.com" target="_blank" rel="noopener">피드백 ↗</a>
 </nav>
 
@@ -35,10 +35,10 @@
       <canvas id="gl" aria-hidden="true"></canvas>
       <div class="hero-fallback" aria-hidden="true"></div>
       <div class="hero-in">
-        <p class="eyebrow" data-h>AI FILM STUDIO &mdash; YONGIN</p>
+        <p class="eyebrow" data-h>FILM + SOFTWARE STUDIO &mdash; YONGIN</p>
         <h1 id="headline" data-h>상상만 하던 장면,<br>유랑이 찍습니다.</h1>
         <div class="hero-row" data-h>
-          <p class="sub">광고, 제품, 버추얼 휴먼, 뮤직비디오.<br>한 컷의 완성도로 기억되는 영상.</p>
+          <p class="sub">영상을 만들고, 영상을 만드는 도구까지 만듭니다.<br>광고, 제품, 버추얼 휴먼, 뮤직비디오.</p>
           <a class="cta" href="#contact"><span>프로젝트 문의</span><i aria-hidden="true"></i></a>
         </div>
       </div>
@@ -74,6 +74,83 @@
         <li><span class="n">05</span><h3>숏폼</h3><p>짧은 길이, 긴 여운.</p></li>
         <li><span class="n">06</span><h3>리터치 · 업스케일</h3><p>이미 찍은 영상을 다시 빛나게.</p></li>
       </ul>
+    </div>
+  </section>
+
+  <section id="tools" class="sec">
+    <div class="wrap">
+      <header class="sh"><p class="lab">In-house Tools</p><h2>영상을 만들고,<br>만드는 도구까지 만듭니다.</h2>
+        <p class="lead">유랑스튜디오는 영상 스튜디오이자, 작업에 쓰는 소프트웨어를 직접 개발하는 팀입니다. 현장에서 필요했던 것을 필요한 모양으로 만들어 쓰고, 계속 고쳐 나갑니다.</p></header>
+      <div class="tl" id="tl">
+        <div class="tl-tabs" role="tablist" aria-label="자체 개발 도구" aria-orientation="vertical">
+          <button type="button" role="tab" id="tt1" aria-controls="tp1" aria-selected="true"><span class="n">01</span><b>오토에디터</b><em>Auto Editor</em><i class="bar"></i></button>
+          <button type="button" role="tab" id="tt2" aria-controls="tp2" aria-selected="false" tabindex="-1"><span class="n">02</span><b>리뷰 · 피드백</b><em>Review</em><i class="bar"></i></button>
+          <button type="button" role="tab" id="tt3" aria-controls="tp3" aria-selected="false" tabindex="-1"><span class="n">03</span><b>멀티 컴퓨터 파이프라인</b><em>Pipeline</em><i class="bar"></i></button>
+          <button type="button" role="tab" id="tt4" aria-controls="tp4" aria-selected="false" tabindex="-1"><span class="n">04</span><b>자동 배포</b><em>Publish</em><i class="bar"></i></button>
+        </div>
+        <div class="tl-stage">
+          <div class="tp" id="tp1" role="tabpanel" aria-labelledby="tt1">
+            <svg viewBox="0 0 480 280" role="img" aria-label="비트에 맞춰 컷이 나뉘고 자막이 붙는 편집 타임라인 도식">
+              <rect class="bx" x="24" y="20" width="200" height="112" rx="2"/>
+              <circle class="ln wmk" cx="124" cy="76" r="26"/><circle class="ln wmk" cx="124" cy="76" r="14"/><path class="fl" d="M118 69l14 7-14 7z"/>
+              <text class="tx" x="244" y="38">SEQ 01</text><text class="tx dm" x="244" y="56">컷 · 자막 · 리듬</text>
+              
+              <g class="tk"><path class="ln" d="M24 156H456"/>
+                <g class="bt"><circle cx="64" cy="156" r="2.6"/><circle cx="128" cy="156" r="2.6"/><circle cx="168" cy="156" r="2.6"/><circle cx="256" cy="156" r="2.6"/><circle cx="312" cy="156" r="2.6"/><circle cx="392" cy="156" r="2.6"/></g></g>
+              <text class="tx dm" x="24" y="182">V</text><text class="tx dm" x="24" y="212">T</text><text class="tx dm" x="24" y="244">A</text>
+              <g class="clips"><rect x="40" y="170" width="88" height="18" rx="2"/><rect x="132" y="170" width="40" height="18" rx="2"/><rect x="176" y="170" width="80" height="18" rx="2"/><rect x="260" y="170" width="56" height="18" rx="2"/><rect x="320" y="170" width="72" height="18" rx="2"/><rect x="396" y="170" width="60" height="18" rx="2"/></g>
+              <g class="subs"><rect x="52" y="200" width="60" height="12" rx="6"/><rect x="140" y="200" width="100" height="12" rx="6"/><rect x="268" y="200" width="36" height="12" rx="6"/><rect x="328" y="200" width="88" height="12" rx="6"/></g>
+              <g class="wave"><path d="M40 244h416" class="ln"/><g id="wv"></g></g>
+              <g class="ph"><path d="M40 146v110"/><path d="M34 140h12l-6 8z" class="fl"/></g>
+            </svg>
+            <h3>오토에디터 <span>자체 개발 자동 편집 엔진</span></h3>
+            <p>컷 편집, 자막, 음악 리듬 맞춤을 자동으로 처리하는 자체 편집 엔진입니다. 어디서 자르고 무엇을 남길지의 판단은 사람 감독 아래에서 이루어집니다.</p>
+          </div>
+          <div class="tp" id="tp2" role="tabpanel" aria-labelledby="tt2" hidden>
+            <svg viewBox="0 0 480 280" role="img" aria-label="영상 위 타임코드에 코멘트와 그림을 남기는 리뷰 화면 도식" id="rvSvg">
+              <rect class="bx" x="24" y="20" width="432" height="186" rx="2" id="rvFrame"/>
+              <path class="ln dm" d="M24 20L456 206M456 20L24 206" opacity=".25"/>
+              <g class="vers"><rect x="372" y="30" width="24" height="16" rx="8" class="vc"/><rect x="400" y="30" width="24" height="16" rx="8" class="vc"/><rect x="428" y="30" width="20" height="16" rx="8" class="vc on"/>
+                <text x="384" y="42" class="tx s" text-anchor="middle">v1</text><text x="412" y="42" class="tx s" text-anchor="middle">v2</text><text x="438" y="42" class="tx s" text-anchor="middle">v3</text></g>
+              <path class="scr" d="M150 96c-30-30 12-62 52-44 40 18 34 60 2 68-30 8-62-6-54-24 6-14 24-18 40-14"/>
+              <g class="pin" id="rvPin"><circle r="5" class="fl ac"/><circle r="11" class="ln ac"/><path class="ln ac" d="M0 11v12"/>
+                <g transform="translate(10 -4)"><rect class="bub" x="0" y="0" width="120" height="40" rx="3"/><text class="tx s" x="10" y="16" id="rvTc">00:07</text><text class="tx s dm" x="10" y="31" id="rvTxt">컷 길이 조정</text></g></g>
+              <g transform="translate(0 232)"><path class="ln" d="M24 0H456"/>
+                <g class="mk"><circle cx="84" cy="0" r="3"/><circle cx="200" cy="0" r="3"/><circle cx="360" cy="0" r="3"/></g>
+                <g class="ph2" id="rvHead"><path d="M0 -12V12"/></g>
+                <text class="tx s dm" x="24" y="28">00:00</text><text class="tx s dm" x="456" y="28" text-anchor="end">00:17</text></g>
+            </svg>
+            <h3>리뷰 · 피드백 시스템 <span>클라이언트 검토 도구</span></h3>
+            <p>영상 위 원하는 타임코드에 바로 코멘트를 달고 그림으로 표시할 수 있습니다. 수정본은 버전별로 정리되어 어떤 의견이 어떻게 반영됐는지 한눈에 남습니다. <b>화면을 눌러 직접 표시해 보세요.</b></p>
+          </div>
+          <div class="tp" id="tp3" role="tabpanel" aria-labelledby="tt3" hidden>
+            <svg viewBox="0 0 480 280" role="img" aria-label="여러 대의 워크스테이션이 작업 큐를 중심으로 서로 연결된 파이프라인 도식">
+              <g class="edges"><path d="M240 140L96 62"/><path d="M240 140L384 62"/><path d="M240 140L96 218"/><path d="M240 140L384 218"/></g>
+              <g class="hub"><circle cx="240" cy="140" r="34" class="bx"/><circle cx="240" cy="140" r="46" class="ln dm"/><text class="tx" x="240" y="138" text-anchor="middle">QUEUE</text><text class="tx s dm" x="240" y="154" text-anchor="middle">작업 분배</text></g>
+              <g class="ws" transform="translate(40 30)"><rect class="bx" width="112" height="64" rx="3"/><text class="tx s" x="12" y="20">WS 01 · 생성</text><g class="gpu"><rect x="12" y="34" width="8" height="18"/><rect x="26" y="34" width="8" height="18"/><rect x="40" y="34" width="8" height="18"/><rect x="54" y="34" width="8" height="18"/></g></g>
+              <g class="ws" transform="translate(328 30)"><rect class="bx" width="112" height="64" rx="3"/><text class="tx s" x="12" y="20">WS 02 · 렌더</text><g class="gpu"><rect x="12" y="34" width="8" height="18"/><rect x="26" y="34" width="8" height="18"/><rect x="40" y="34" width="8" height="18"/><rect x="54" y="34" width="8" height="18"/></g></g>
+              <g class="ws" transform="translate(40 186)"><rect class="bx" width="112" height="64" rx="3"/><text class="tx s" x="12" y="20">WS 03 · 합성</text><g class="gpu"><rect x="12" y="34" width="8" height="18"/><rect x="26" y="34" width="8" height="18"/><rect x="40" y="34" width="8" height="18"/><rect x="54" y="34" width="8" height="18"/></g></g>
+              <g class="ws" transform="translate(328 186)"><rect class="bx" width="112" height="64" rx="3"/><text class="tx s" x="12" y="20">WS 04 · 출력</text><g class="gpu"><rect x="12" y="34" width="8" height="18"/><rect x="26" y="34" width="8" height="18"/><rect x="40" y="34" width="8" height="18"/><rect x="54" y="34" width="8" height="18"/></g></g>
+            </svg>
+            <h3>멀티 컴퓨터 AI 제작 파이프라인 <span>자체 렌더 · 생성 파이프라인</span></h3>
+            <p>여러 대의 GPU 워크스테이션이 서로 작업을 나눠 맡고 주고받는 자체 렌더·생성 파이프라인입니다. 한 대의 한계에 작품이 묶이지 않도록 구성했습니다.</p>
+          </div>
+          <div class="tp" id="tp4" role="tabpanel" aria-labelledby="tt4" hidden>
+            <svg viewBox="0 0 480 280" role="img" aria-label="완성된 영상이 채널별 일정에 맞춰 예약되는 배포 도식">
+              <g class="days"><text class="tx s dm" x="152" y="34">월</text><text class="tx s dm" x="198" y="34">화</text><text class="tx s dm" x="244" y="34">수</text><text class="tx s dm" x="290" y="34">목</text><text class="tx s dm" x="336" y="34">금</text><text class="tx s dm" x="382" y="34">토</text><text class="tx s dm" x="428" y="34">일</text></g>
+              <rect class="bx fin" x="24" y="96" width="76" height="88" rx="3"/><path class="fl" d="M54 128l22 12-22 12z" opacity=".7"/><text class="tx s" x="62" y="172" text-anchor="middle">FINAL</text>
+              <g class="rows"><path class="ln dm" d="M124 62H456M124 128H456M124 194H456M124 250H456"/></g>
+              <g class="flow"><path d="M100 140C116 140 112 95 134 95"/><path d="M100 140H134"/><path d="M100 140C116 140 112 185 134 185"/></g>
+              <text class="tx s" x="124" y="84" >CHANNEL 01</text><text class="tx s" x="124" y="150">CHANNEL 02</text><text class="tx s" x="124" y="216">CHANNEL 03</text>
+              <g class="slots"><rect x="196" y="90" width="42" height="14" rx="7"/><rect x="334" y="90" width="42" height="14" rx="7"/><rect x="242" y="156" width="42" height="14" rx="7"/><rect x="380" y="156" width="42" height="14" rx="7"/><rect x="150" y="222" width="42" height="14" rx="7"/><rect x="288" y="222" width="42" height="14" rx="7"/></g>
+              <g class="now"><path d="M0 46V262"/></g>
+            </svg>
+            <h3>자동 배포 · 업로드 <span>자체 배포 도구</span></h3>
+            <p>완성된 영상을 채널별 일정에 맞춰 올려 주는 자체 도구입니다. 올리는 일은 도구가 맡고, 무엇을 언제 보여줄지는 사람이 정합니다.</p>
+          </div>
+        </div>
+      </div>
+      <p class="tl-note">도구는 연출을 대신하지 않습니다. 반복되는 일을 맡고, 감독은 장면에 더 오래 머뭅니다.</p>
     </div>
   </section>
 
