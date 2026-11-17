@@ -8,6 +8,9 @@ var root=document.documentElement,body=document.body;
 var rm=root.classList.contains("rm")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
 var small=Math.min(screen.width||9999,innerWidth)<=760;
 var NS="http://www.w3.org/2000/svg";
+/* effects that were removed on request; flip a flag to bring one back (window.YR_FLAGS = {irisBlink:true,flicker:true,gateFlash:true}) */
+var FLAGS={irisBlink:false,flicker:false,gateFlash:false};
+if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
 function clamp(v,a,b){return v<a?a:v>b?b:v;}
 function eIn(t){return t*t*t;}function eOut(t){t=1-t;return 1-t*t*t;}
 
@@ -31,7 +34,7 @@ function setC(c){
 }
 function blink(fn,opts){
   opts=opts||{};
-  if(rm){fn();return;}
+  if(rm||!FLAGS.irisBlink){fn();return;}
   if(busy){fn();return;}
   buildBlink();busy=true;
   var CL=opts.close||230,OP=opts.open||340,t0=performance.now(),done=false;
@@ -137,70 +140,104 @@ function themeAI(){
   [].slice.call(pg.querySelectorAll(".pi")).slice(0,24).forEach(function(c){io.observe(c);});
 }
 
-/* ---------- /work/live : analog film strip with projector gate ---------- */
+/* ---------- /work/live : horizontal film strip, vertical scroll drives it sideways through a projector gate ---------- */
 function themeLive(){
-  var pg=document.getElementById("pg");if(!pg)return;
+  var pg=document.getElementById("pg"),chips=document.getElementById("chips"),head=document.querySelector(".pg-head");
+  if(!pg||!head)return;
   var V=window.YR_L||[];
-  pg.classList.add("strip");
-  var cards=[].slice.call(pg.querySelectorAll(".pi"));
-  /* leader frames keep the strip running when there are only a few works (decorative, no text claims) */
-  var need=Math.max(0,4-cards.length),before=0,after=need; /* real works first, leaders follow */
-  function leader(n){var d=document.createElement("div");d.className="leader";d.setAttribute("aria-hidden","true");d.innerHTML='<span class="ec">YURANG '+(5000+n*7)+'</span>';return d;}
-  for(var i=0;i<before;i++)pg.insertBefore(leader(i),pg.firstChild);
-  for(var j=0;j<after;j++)pg.appendChild(leader(before+cards.length+j));
+  /* structure: pinned stage after the heading; chips live inside the stage so categories stay reachable */
+  var sec=document.createElement("section");sec.className="lv";sec.id="lv";
+  sec.innerHTML='<div class="lv-stage"><div class="lv-top"></div><div class="lv-view"><div class="lv-gate" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>'+
+    '<div class="lv-foot" aria-hidden="true"><b id="lvN">01</b><span id="lvT"></span><div class="lv-bar"><u id="lvBar"></u></div></div></div>';
+  head.parentNode.insertBefore(sec,head.nextSibling);
+  var top=sec.querySelector(".lv-top"),view=sec.querySelector(".lv-view"),stage=sec.querySelector(".lv-stage");
+  if(chips)top.appendChild(chips);
+  view.insertBefore(pg,view.firstChild);pg.classList.add("lv-track");
+  /* the CTA and the back link move below the strip */
+  var tail=document.createElement("section");tail.className="sec lv-end";tail.innerHTML='<div class="wrap"></div>';
+  sec.parentNode.insertBefore(tail,sec.nextSibling);
+  [].slice.call(head.querySelectorAll(".more,.live-note")).forEach(function(n){tail.firstChild.appendChild(n);});
   var grain=document.createElement("div");grain.className="grain";grain.setAttribute("aria-hidden","true");
   var flk=document.createElement("div");flk.className="flicker";flk.setAttribute("aria-hidden","true");
+  if(!FLAGS.flicker)flk.style.display="none";
   var gate=document.createElement("div");gate.className="gate";gate.setAttribute("aria-hidden","true");
   body.appendChild(grain);body.appendChild(flk);body.appendChild(gate);
-  if(rm){return;}
-  var act=-1,ifr=null,last=scrollY,off=0,jx=0,raf=0,tick=0;
-  /* the poster stays until YouTube reports that the clip is actually playing */
-  addEventListener("message",function(e){
-    if(!ifr||!/youtube\.com$/.test(e.origin.replace(/^https?:\/\//,'')))return;
-    var d=e.data;try{if(typeof d==="string")d=JSON.parse(d);}catch(x){return;}
-    if(!d)return;var st=(d.event==="onStateChange")?d.info:(d.info&&d.info.playerState);
-    if(st===1)ifr.classList.add("ld");
-  });
+  var nEl=document.getElementById("lvN"),tEl=document.getElementById("lvT"),bar=document.getElementById("lvBar");
+
+  var items=[],all=[].slice.call(pg.querySelectorAll(".pi")),fw=500,gap=24,step=524,maxT=0,len=1,lvTop=0;
+  var x=0,tx=0,act=-1,ifr=null,raf=0,last=performance.now(),still=0,lastScroll=scrollY,vel=0;
+  var K=.8;
+  function vis(){items=all.filter(function(c){return !c.hidden;});}
+  function layout(){
+    vis();
+    var vw=innerWidth,vh=innerHeight,small=vw<=760;
+    fw=small?Math.round(vw*.8):Math.round(Math.min(640,vw*.44));gap=small?16:30;
+    var fh=Math.round(fw*9/16);step=fw+gap;
+    sec.style.setProperty("--fw",fw+"px");sec.style.setProperty("--fh",fh+"px");sec.style.setProperty("--gap",gap+"px");
+    maxT=Math.max(0,(items.length-1)*step);
+    len=Math.max(1,maxT*K);
+    var stageH=stage.offsetHeight||vh;
+    sec.style.height=(stageH+len)+"px";
+    lvTop=sec.getBoundingClientRect().top+scrollY;
+    kick(true);
+  }
   function setActive(n){
     if(n===act)return;
     if(ifr){ifr.remove();ifr=null;}
-    if(act>=0&&cards[act])cards[act].classList.remove("on");
+    if(act>=0&&items[act])items[act].classList.remove("on");
     act=n;
-    if(n>=0){
-      var c=cards[n];c.classList.add("on");
-      var id=V[n]&&V[n][0];
-      if(id){
+    if(n>=0&&items[n]){
+      var c=items[n];c.classList.add("on");
+      gate.classList.remove("snap");void gate.offsetWidth;if(!rm&&FLAGS.gateFlash)gate.classList.add("snap");
+      var idx=all.indexOf(c),id=V[idx]&&V[idx][0];
+      if(id&&!rm){
         ifr=document.createElement("iframe");ifr.className="gatevid";ifr.setAttribute("tabindex","-1");ifr.setAttribute("aria-hidden","true");ifr.setAttribute("title","");
-        ifr.allow="autoplay; encrypted-media";ifr.setAttribute("loading","lazy");var me=ifr;ifr.addEventListener("load",function(){try{me.contentWindow.postMessage(JSON.stringify({event:"listening",id:1}),"*");me.contentWindow.postMessage(JSON.stringify({event:"command",func:"addEventListener",args:["onStateChange"]}),"*");}catch(e){}});
+        ifr.allow="autoplay; encrypted-media";var me=ifr;
+        ifr.addEventListener("load",function(){try{me.contentWindow.postMessage(JSON.stringify({event:"listening",id:1}),"*");me.contentWindow.postMessage(JSON.stringify({event:"command",func:"addEventListener",args:["onStateChange"]}),"*");}catch(e){}});
         ifr.src="https://www.youtube.com/embed/"+id+"?autoplay=1&mute=1&controls=0&loop=1&playlist="+id+"&playsinline=1&rel=0&modestbranding=1&disablekb=1&enablejsapi=1";
         c.querySelector(".pi-img").appendChild(ifr);
       }
-      gate.classList.remove("snap");void gate.offsetWidth;gate.classList.add("snap");
     }
   }
-  function frame(){
+  /* the poster stays until YouTube reports that the clip is actually playing */
+  addEventListener("message",function(e){
+    if(!ifr||!/youtube\.com$/.test(e.origin.replace(/^https?:\/\//,'')))return;
+    var d=e.data;try{if(typeof d==="string")d=JSON.parse(d);}catch(z){return;}
+    if(!d)return;var st=(d.event==="onStateChange")?d.info:(d.info&&d.info.playerState);
+    if(st===1)ifr.classList.add("ld");
+  });
+  function frame(now){
     raf=0;
-    var y=scrollY,v=y-last;last=y;
-    var mid=innerHeight/2,best=-1,bd=1e9;
-    for(var k=0;k<cards.length;k++){
-      var r=cards[k].querySelector(".pi-img").getBoundingClientRect(),d=Math.abs((r.top+r.height/2)-mid);
-      if(d<bd){bd=d;best=k;}
-    }
-    var rr=cards[best]?cards[best].querySelector(".pi-img").getBoundingClientRect():null;
-    setActive(rr&&bd<rr.height*.55?best:-1);
-    /* gate hunt: the strip lags a little behind the scroll and settles with a tiny jitter */
-    off+=(clamp(-v*.22,-16,16)-off)*.2;
-    jx=Math.abs(v)>2?(Math.random()-.5)*Math.min(3,Math.abs(v)*.12):jx*.6;
-    pg.style.transform="translate3d("+jx.toFixed(2)+"px,"+off.toFixed(2)+"px,0)";
-    if(Math.abs(off)>.05||Math.abs(v)>.2||Math.abs(jx)>.05)raf=requestAnimationFrame(frame);
-    else pg.style.transform="";
+    var dt=Math.min(.05,(now-last)/1000)||.016;last=now;
+    var p=clamp((scrollY-lvTop)/len,0,1);    var f=p*(items.length-1);
+    /* a light pull toward the nearest frame, like a gate catching the film */
+    var pull=rm?0:.35*Math.exp(-Math.abs(vel)/120);
+    var fs=f+(Math.round(f)-f)*pull;
+    tx=-fs*step;    var k=rm?1:1-Math.exp(-dt*7.5);
+    x+=(tx-x)*k;
+    var sp=Math.abs(tx-x)/Math.max(dt,.001);
+    var jy=0,jr=0;
+    if(!rm&&Math.abs(tx-x)>.6){var a=Math.min(1.6,sp*.0012);jy=(Math.random()-.5)*a*2;jr=(Math.random()-.5)*a*.06;}
+    pg.style.transform="translate3d("+x.toFixed(2)+"px,"+jy.toFixed(2)+"px,0) rotate("+jr.toFixed(3)+"deg)";
+    var cur=items.length?clamp(Math.round(-x/step),0,items.length-1):-1;
+    var off=Math.abs(-x-cur*step);
+    if(Math.abs(tx-x)<2&&off<step*.25)still+=dt;else still=0;
+    if(rm||still>.22){if(off<step*.3)setActive(cur);}else if(Math.abs(tx-x)>step*.35)setActive(-1);
+    nEl.textContent=(cur+1<10?"0":"")+(cur+1);
+    tEl.textContent=items[cur]?" / "+(items.length<10?"0":"")+items.length:"";
+    bar.style.transform="scaleX("+(items.length>1?(p).toFixed(4):1)+")";
+    if(Math.abs(tx-x)>.2||still<.3)raf=requestAnimationFrame(frame);
   }
-  function kick(){if(!raf)raf=requestAnimationFrame(frame);}
-  addEventListener("scroll",kick,{passive:true});addEventListener("resize",kick,{passive:true});
-  document.addEventListener("visibilitychange",function(){if(document.hidden)setActive(-1);else kick();});
-  addEventListener("yr-modal",function(){if(window.YR&&window.YR.modalOpen)setActive(-1);});
+  function kick(){if(!raf){last=performance.now();raf=requestAnimationFrame(frame);}}
+  addEventListener("scroll",function(){var d=scrollY-lastScroll;lastScroll=scrollY;vel=d*60;kick();setTimeout(function(){vel=0;},120);},{passive:true});
+  addEventListener("resize",layout,{passive:true});
+  if(chips)chips.addEventListener("click",function(){setTimeout(function(){setActive(-1);x=0;layout();scrollTo(0,Math.min(scrollY,lvTop)||0);window.scrollTo({top:lvTop-0,behavior:"auto"});kick();},30);});
+  pg.addEventListener("focusin",function(e){var c=e.target.closest&&e.target.closest(".pi");var i=items.indexOf(c);if(i<0)return;scrollTo({top:lvTop+(items.length>1?i/(items.length-1)*len:0),behavior:rm?"auto":"smooth"});});
   pg.addEventListener("click",function(){setTimeout(function(){setActive(-1);},500);});
-  kick();
+  document.addEventListener("visibilitychange",function(){if(document.hidden)setActive(-1);else kick();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+  layout();
+  addEventListener("load",layout);
 }
 
 /* ---------- /tools : blueprint, UI windows assemble ---------- */

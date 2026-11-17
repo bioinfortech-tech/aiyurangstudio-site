@@ -16,7 +16,8 @@ var NS="http://www.w3.org/2000/svg";
 var COL=[{bg:"#EFE7D6",ink:"#1B1A17"},{bg:"#111113",ink:"#F3EEE4"},{bg:"#EE8B76",ink:"#1E1210"},{bg:"#9DB095",ink:"#12190F"},{bg:"#F5F3EE",ink:"#141414"}];
 var DARK="#0B0B0D";
 var BGL=COL.map(function(c){return toLch(c.bg);}),INKL=COL.map(function(c){return toLch(c.ink);}),DARKL=toLch("#0B0B0D");
-var HS=[76,94,110,124,134],HMIN=3,HFULL=140,BW=.16,TOTAL=6;
+var HS=[84,102,118,130,138],HMIN=3,HFULL=140,BW=.16,TOTAL=6;
+var FLAGS={irisBlink:false};if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
 var VIDEO="media/hero.mp4",VIDEO_M="media/hero_m.mp4";
 /* reel segments [start,end] and the existing work each one stands for (id from data.js); used only for click-to-open */
 var SEG=[[4.3,7.0],[8.3,10.6],[11.2,14.0],[7.1,8.2],[.3,3.8]];
@@ -135,7 +136,7 @@ function aperture(U){
   if(U>=5)return HS[4]+(HFULL-HS[4])*ss(5,5.8,U);
   var i=Math.floor(U),f=U-i,h=HS[i],c=0;
   if(f<BW)c=1-f/BW;else if(i<4&&f>1-BW)c=(f-(1-BW))/BW;
-  if(c>0){var e=eIO(c);h=h*(1-e)+HMIN*e;}
+  if(FLAGS.irisBlink&&c>0){var e=eIO(c);h=h*(1-e)+HMIN*e;}else if(!FLAGS.irisBlink){h=HS[i]+(HS[Math.min(4,i+1)]-HS[i])*ss(0,1,f);}
   return h;
 }
 function update(){

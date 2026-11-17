@@ -18,6 +18,8 @@ Promise.all([import("three"),import("three/addons/environments/RoomEnvironment.j
 function fail(e){root.classList.remove("gl3d");window.YR_I3=null;if(window.console&&console.info)console.info("iris3d: using SVG fallback",e&&e.message);}
 
 function start(THREE,RoomEnvironment){
+  /* the close/reopen blink was removed on request; flip YR_FLAGS.irisBlink to bring it back */
+  var FLAGS={irisBlink:false};if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
   var canvas=document.createElement("canvas");canvas.className="gl3";canvas.setAttribute("aria-hidden","true");
   cs.insertBefore(canvas,cs.querySelector(".dk"));
   var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:"high-performance",stencil:true});
@@ -34,11 +36,12 @@ function start(THREE,RoomEnvironment){
   var camera=new THREE.PerspectiveCamera(FOV,1,.1,60);camera.position.set(0,0,DIST);
 
   /* ---- lights ---- */
-  var key=new THREE.DirectionalLight(0xffffff,1.9);key.position.set(-2.6,3.4,5.5);key.castShadow=true;
+  var key=new THREE.DirectionalLight(0xffffff,1.9);key.position.set(-3.6,4.4,4.2);key.castShadow=true;
   key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-1.5;key.shadow.camera.right=1.5;key.shadow.camera.top=1.5;key.shadow.camera.bottom=-1.5;
-  key.shadow.camera.near=2;key.shadow.camera.far=14;key.shadow.bias=-.0003;key.shadow.normalBias=.012;
+  key.shadow.camera.near=2;key.shadow.camera.far=14;key.shadow.bias=-.0002;key.shadow.normalBias=.006;
   scene.add(key);scene.add(key.target);
-  var rim=new THREE.DirectionalLight(0xbfd0ff,.55);rim.position.set(3.5,-1.5,3);scene.add(rim);
+  var rim=new THREE.DirectionalLight(0xe6ecff,1.5);rim.position.set(4.5,.8,2.2);scene.add(rim);
+  var rim2=new THREE.DirectionalLight(0xffffff,.7);rim2.position.set(.5,-4,2.5);scene.add(rim2);
 
   var iris=new THREE.Group();scene.add(iris);
   /* everything inside the housing is clipped to the aperture circle with the stencil buffer */
@@ -63,7 +66,7 @@ function start(THREE,RoomEnvironment){
   var knurl=new THREE.CanvasTexture(knurlC);knurl.wrapS=THREE.RepeatWrapping;knurl.colorSpace=THREE.NoColorSpace;
 
   /* ---- blades ---- */
-  var NB=7,PX=.55,PY=1.0,D0=.86,BULGE=.03,AMAX=D0-BULGE;
+  var NB=7,PX=.55,PY=1.0,D0=.96,BULGE=.03,AMAX=D0-BULGE;
   function bladeShape(){
     var s=new THREE.Shape();
     function P(x,y){return [x-PX,y-PY];}
@@ -81,9 +84,14 @@ function start(THREE,RoomEnvironment){
     var lo=0,hi=LN;while(hi-lo>1){var m=(lo+hi)>>1;if(LUT[m]>a)lo=m;else hi=m;}
     var t=(LUT[lo]-a)/(LUT[lo]-LUT[hi]);return PHIMAX*(lo+t)/LN;
   }
-  var bladeGeo=new THREE.ExtrudeGeometry(bladeShape(),{depth:.005,bevelEnabled:true,bevelThickness:.0026,bevelSize:.0042,bevelSegments:2,curveSegments:24});
+  var bladeGeo=new THREE.ExtrudeGeometry(bladeShape(),{depth:.006,bevelEnabled:true,bevelThickness:.0034,bevelSize:.0055,bevelSegments:3,curveSegments:24});
   var bladeMat=clip(new THREE.MeshPhysicalMaterial({color:0x4f545f,metalness:.95,roughness:.3,roughnessMap:brush,bumpMap:brush,bumpScale:.08,clearcoat:.6,clearcoatRoughness:.22,anisotropy:.55,anisotropyRotation:0,envMapIntensity:2.8}));
-  var LAYER=[0,1,2,3,4,5,6],Z0=-.035,DZ=.0145;
+  /* per-blade read: bright machined edge, darker toward the outside, so the overlapping leaves separate */
+  bladeMat.onBeforeCompile=function(sh){
+    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <begin_vertex>','#include <begin_vertex>\nvLY=position.y+'+PY.toFixed(3)+'-'+D0.toFixed(3)+';');
+    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb*=mix(1.5,.5,smoothstep(0.,.55,vLY));').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=vec3(.5,.52,.58)*(1.-smoothstep(0.,.014,vLY))*step(-.02,vLY);');
+  };
+  var LAYER=[0,1,2,3,4,5,6],Z0=-.04,DZ=.019;
   var blades=[],holders=[];
   for(var k=0;k<NB;k++){
     var holder=new THREE.Group();holder.rotation.z=k*2*Math.PI/NB;iris.add(holder);
@@ -95,7 +103,7 @@ function start(THREE,RoomEnvironment){
   ringPts.reverse();var ringGeo=new THREE.LatheGeometry(ringPts,160);
   var ringMat=new THREE.MeshPhysicalMaterial({color:0xe4e7ec,metalness:1,roughness:.2,clearcoat:.5,clearcoatRoughness:.12,envMapIntensity:2.2});
   ringMat.side=THREE.DoubleSide;var ring=new THREE.Mesh(ringGeo,ringMat);ring.rotation.x=Math.PI/2;ring.castShadow=true;ring.receiveShadow=true;iris.add(ring);
-  var kn=new THREE.Mesh(new THREE.CylinderGeometry(1.15,1.15,.13,180,1,true),new THREE.MeshPhysicalMaterial({color:0x62656e,metalness:1,roughness:.34,bumpMap:knurl,bumpScale:2.2,clearcoat:.25,envMapIntensity:2,side:THREE.DoubleSide}));
+  var kn=new THREE.Mesh(new THREE.CylinderGeometry(1.143,1.143,.13,180,1,true),new THREE.MeshPhysicalMaterial({color:0x9a9da6,metalness:1,roughness:.4,bumpMap:knurl,bumpScale:1.1,clearcoat:.15,envMapIntensity:2.4,side:THREE.DoubleSide}));
   kn.rotation.x=Math.PI/2;kn.position.z=-.005;iris.add(kn);
   /* engraved scale on the ring face */
   var eg=document.createElement("canvas");eg.width=eg.height=2048;
@@ -116,6 +124,27 @@ function start(THREE,RoomEnvironment){
   var vtex=new THREE.VideoTexture(video);vtex.colorSpace=THREE.SRGBColorSpace;vtex.minFilter=THREE.LinearFilter;vtex.magFilter=THREE.LinearFilter;vtex.generateMipmaps=false;
   var vmat=clip(new THREE.MeshBasicMaterial({map:vtex,toneMapped:false,color:0xffffff}));
   var vplane=new THREE.Mesh(new THREE.PlaneGeometry(2.4,2.4),vmat);vplane.position.z=-.14;iris.add(vplane);
+  /* soft crossfade between clips: a snapshot of the outgoing frame fades away over the incoming one */
+  var snapC=document.createElement("canvas");snapC.width=snapC.height=512;var snapCtx=snapC.getContext("2d");
+  var snapTex=new THREE.CanvasTexture(snapC);snapTex.colorSpace=THREE.SRGBColorSpace;
+  var snapMat=clip(new THREE.MeshBasicMaterial({map:snapTex,transparent:true,opacity:0,toneMapped:false,depthWrite:false}));
+  var snap=new THREE.Mesh(new THREE.PlaneGeometry(2.4,2.4),snapMat);snap.position.z=-.135;iris.add(snap);
+  var fade={on:false,t0:0};
+  function startFade(idx,now){
+    var vw=video.videoWidth,vh=video.videoHeight,ok=false;
+    if(vw&&vh&&video.readyState>=2){
+      var sx=0,sy=0,sw=vw,sh=vh;if(vw>vh){sx=(vw-vh)/2;sw=vh;}else{sy=(vh-vw)/2;sh=vw;}
+      try{snapCtx.drawImage(video,sx,sy,sw,sh,0,0,512,512);snapTex.needsUpdate=true;ok=true;}catch(e){}
+    }
+    if(window.YR_SH)window.YR_SH.setSeg(idx);shownIdx=idx;
+    if(ok){fade.on=true;fade.t0=now;snapMat.opacity=1;}
+  }
+  function updateFade(now){
+    if(!fade.on)return;
+    var e=now-fade.t0-140;if(e<=0){snapMat.opacity=1;return;}
+    var t=e/620;if(t>=1){fade.on=false;snapMat.opacity=0;return;}
+    snapMat.opacity=1-(t*t*(3-2*t));
+  }
   function fitVideo(){var vw=video.videoWidth,vh=video.videoHeight;if(!vw||!vh)return;var a=vw/vh;if(a>1){vtex.repeat.set(1/a,1);vtex.offset.set((1-1/a)/2,0);}else{vtex.repeat.set(1,a);vtex.offset.set(0,(1-a)/2);}}
   video.addEventListener("loadedmetadata",fitVideo);fitVideo();
   var catcher=new THREE.Mesh(new THREE.PlaneGeometry(2.4,2.4),clip(new THREE.ShadowMaterial({opacity:.62})));catcher.position.z=-.1;catcher.receiveShadow=true;iris.add(catcher);
@@ -139,7 +168,7 @@ function start(THREE,RoomEnvironment){
   drop.position.set(.1,-.32,-.6);iris.add(drop);
 
   /* ---- state / smoothing ---- */
-  var HSA=[.34,.5,.62,.73,.8],AMIN=.025;
+  var HSA=[.46,.63,.75,.83,.88],AMIN=.025;
   var S={U:0,ccx:0,ccy:0,D:520,W:1,H:1,smax:3};
   var cur={a:HSA[0],dive:0,ry:0,rx:0,sheen:-.6},vel={a:0,dive:0,ry:0,rx:0};
   var blink={on:false,t0:0,idx:0,committed:false,c:1},shownIdx=0,intro=true;
@@ -150,7 +179,7 @@ function start(THREE,RoomEnvironment){
   function targetA(U){
     if(U>=5)return HSA[4];
     var i=Math.floor(U),f=U-i;if(i>=4)return HSA[4];
-    return HSA[i]+(HSA[i+1]-HSA[i])*ss(.5,1,f);
+    return HSA[i]+(HSA[i+1]-HSA[i])*ss(0,1,f);
   }
   var size={w:0,h:0};
   function resize(){
@@ -194,9 +223,9 @@ function start(THREE,RoomEnvironment){
     resize();
     var U=reduce?4.5:S.U;
     var idx=Math.min(4,Math.floor(U+(U>lastIdx?.001:-.001)));if(idx<0)idx=0;
-    if(!reduce&&lastIdx>=0&&idx!==lastIdx&&U<5)startBlink(idx,now);
+    if(!reduce&&lastIdx>=0&&idx!==lastIdx&&U<5){if(FLAGS.irisBlink)startBlink(idx,now);else startFade(idx,now);}
     if(U>=5&&lastIdx!==4){/* dive: stay on the last clip */}
-    if(lastIdx<0){if(!reduce){blink.on=true;blink.t0=now-CL-HOLD;blink.committed=false;blink.idx=idx;shownIdx=idx;if(window.YR_SH)window.YR_SH.setSeg(idx);}}
+    if(lastIdx<0){if(FLAGS.irisBlink&&!reduce){blink.on=true;blink.t0=now-CL-HOLD;blink.committed=false;blink.idx=idx;shownIdx=idx;if(window.YR_SH)window.YR_SH.setSeg(idx);}else{shownIdx=idx;if(window.YR_SH)window.YR_SH.setSeg(idx);}}
     if(U<5)lastIdx=idx;else lastIdx=4;
     var ta=targetA(U),td=reduce?0:ss(5,5.8,U);
     var tr=reduce?-6:Math.sin(U*1.3)*7,tx=reduce?3:-Math.cos(U*.9)*4;
@@ -205,7 +234,7 @@ function start(THREE,RoomEnvironment){
     r=sd(cur.dive,td,vel.dive,.18,dt);cur.dive=r[0];vel.dive=r[1];
     r=sd(cur.ry,tr,vel.ry,.4,dt);cur.ry=r[0];vel.ry=r[1];
     r=sd(cur.rx,tx,vel.rx,.4,dt);cur.rx=r[0];vel.rx=r[1];
-    var c=blinkC(now);
+    var c=FLAGS.irisBlink?blinkC(now):0;updateFade(now);
     var a=cur.a*(1-c)+AMIN*c;
     if(cur.dive>.001){a=cur.a+(AMAX-cur.a)*ss(0,.7,cur.dive);}
     setBlades(a);

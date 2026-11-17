@@ -1,6 +1,7 @@
 /* Hero: cinema lens (three.js r128, single fullscreen fragment shader).
    Light field behind the glass = procedural by default; swaps to media/hero.mp4 when it plays. */
 (function(){
+function __boot(){
 "use strict";
 var root=document.documentElement;
 var HERO_VIDEO="media/hero.mp4",HERO_VIDEO_M="media/hero_m.mp4"; /* phones try the lighter cut first, fall back to hero.mp4 */           /* optional: short muted loop placed behind the lens */
@@ -187,7 +188,7 @@ function tryVideo(){
   if(reduce)return;
   var v=document.createElement("video");v.muted=true;v.defaultMuted=true;v.loop=false;v.playsInline=true;v.setAttribute("playsinline","");v.setAttribute("webkit-playsinline","");v.setAttribute("muted","");v.preload="auto";v.crossOrigin="anonymous";
   var armed=false;
-  function ok(){if(vidOn)return;vel=v;vtex=new THREE.Texture(v);vtex.minFilter=THREE.LinearFilter;vtex.magFilter=THREE.LinearFilter;vtex.generateMipmaps=false;U.uTex.value=vtex;vidOn=true;if(v.videoWidth)U.uVA.value=v.videoWidth/v.videoHeight;}
+  function ok(){if(vidOn)return;vel=v;vtex=new THREE.VideoTexture(v);vtex.minFilter=THREE.LinearFilter;vtex.magFilter=THREE.LinearFilter;vtex.generateMipmaps=false;U.uTex.value=vtex;vidOn=true;if(v.videoWidth)U.uVA.value=v.videoWidth/v.videoHeight;}
   function play(){var pr=v.play();if(pr&&pr.then){pr.then(ok).catch(arm);}else{ok();}}
   function arm(){ /* autoplay blocked: start on first gesture */
     if(armed)return;armed=true;
@@ -239,4 +240,6 @@ function still(){
 }
 if(reduce){root.classList.add("rm");still();}
 else{tryVideo();evalRun();}
+}
+if(typeof THREE!=="undefined")__boot();else addEventListener("three-ready",__boot,{once:true});
 })();
