@@ -173,6 +173,7 @@ function update(){
     el.style.transform="translate3d(0,"+y.toFixed(1)+"px,0)";
     el.style.visibility=o<=.01?"hidden":"visible";
     el.style.pointerEvents=o>.6?"auto":"none";
+    if(el.classList.contains("fl"))el.classList.toggle("go",o>.55);
   }
   /* iris: WebGL when available, SVG otherwise */
   if(window.YR_I3&&window.YR_I3.ready){
