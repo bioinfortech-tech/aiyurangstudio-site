@@ -733,3 +733,92 @@ h2{font-size:clamp(28px,3.4vw,49px);line-height:1.2;letter-spacing:-.03em}
   .tool h2,.build h2,.ex-h{font-size:clamp(24px,6.8vw,28px)}
   .sv h3{font-size:18px}.st h3{font-size:19px}.tl-note{font-size:18px}
 }
+
+/* ===== round 5: unified headline scale, fixed text block, calmer iris ===== */
+body{font-weight:400}
+main h1:not(.hero h1),.pg-head h1,.dp .pg-head h1{font-family:var(--serif-kr);font-weight:500}
+.sh h2,.ci h2,#tools h2,.tool h2,.build h2,.ex-h,.sv h3,.st h3,.tp h3,.bl h3,.ok h3{font-family:var(--serif-kr);font-weight:500}
+.n,.pi-meta .n,.dr-meta .n,.sv .n,.st .n,.bl .n{font-family:var(--sans);font-style:normal;font-weight:500}
+.pg-head h1,.dp .pg-head h1{font-size:clamp(32px,3.15vw,46px);line-height:1.28;letter-spacing:-.02em;word-break:keep-all;text-wrap:balance}
+.lab,.cp .k{font-size:12px;letter-spacing:.24em}
+/* main run: one headline style on every slide, block pinned to a fixed top */
+.cp{top:0;bottom:0;justify-content:flex-start;padding-top:max(150px,33vh);width:min(34vw,480px)}
+.cp .ch,.cp .ch.sm{font-family:var(--serif-kr);font-weight:500;font-size:clamp(30px,3.15vw,46px);line-height:1.32;letter-spacing:-.02em;max-width:480px;word-break:keep-all;text-wrap:balance;margin-bottom:32px}
+.cp .k{margin-bottom:22px}
+.cp .ch + .cl{margin-top:-8px}
+.cp .cl{margin:0 0 32px;gap:8px 8px;max-width:480px}
+.cp .cl li{font-size:13px;height:34px;display:inline-flex;align-items:center;padding:0 14px;border:1.5px solid currentColor;border-radius:999px;opacity:1;line-height:1}
+.cp .cta{height:50px;font-size:15px;padding:0 24px 0 26px}
+.cpg u{opacity:.8;border-width:1.5px}.cpg u.p{opacity:.85}
+.ob{right:6vw;top:18.5vh;width:50vw;height:63vh}
+@media (max-width:1024px) and (min-width:761px){.cp{width:min(44vw,480px)}.ob{right:3vw;width:50vw}}
+@media (max-width:760px){
+  .ob{left:0;right:0;top:92px;width:auto;height:300px}
+  .cp{left:20px;right:20px;width:auto;top:0;bottom:0;padding-top:calc(92px + 300px + 28px);justify-content:flex-start}
+  .cp .ch,.cp .ch.sm{font-size:24px;line-height:1.4;margin-bottom:22px;max-width:none}
+  .cp .k{font-size:11px;margin-bottom:16px}
+  .cp .ch + .cl{margin-top:-6px}
+  .cp .cl{margin-bottom:22px}.cp .cl li{font-size:12.5px;height:32px;padding:0 12px}
+  .cp .cta{height:48px}
+  .pg-head h1,.dp .pg-head h1{font-size:clamp(26px,7vw,30px)}
+}
+/* doors */
+.door .dr-meta{gap:8px}
+.dr-meta .n{font-size:14px;line-height:20px;height:20px;color:var(--dim)}
+.dr-meta b{font-size:clamp(23px,1.95vw,28px);line-height:1.2}
+.dr-meta em{font-size:14.5px;line-height:1.6;color:#b8bcc8}
+.door-tools .dr-meta em{font-family:var(--sans)}
+.door-live .dr-meta em{color:#cfc4b0}
+/* /work cards */
+.th-ai .pi-meta b,.pg .pi-meta b{font-size:clamp(17px,1.35vw,20px)}
+.pg .pi-meta em{font-size:13.5px}
+/* /work/live */
+.th-live .lv-track .pi-img img{filter:sepia(.4) saturate(.9) brightness(.62)}
+.th-live .lv-track .pi-meta{opacity:.75;font-size:14px;color:#cfc4b0}
+.th-live .lv-track .pi-meta b{color:#cfc4b0;font-size:15px}
+.th-live .lv-track .pi.on .pi-meta b{color:#F1E6D2}
+.th-live .lv-track .pi-img::after{background:radial-gradient(ellipse at 50% 50%,transparent 62%,rgba(10,6,3,.4)),linear-gradient(180deg,rgba(10,6,3,.15),transparent 30%,transparent 70%,rgba(10,6,3,.25))}
+.th-live .lv-track .pi-play{width:48px;height:48px;margin:-24px;opacity:.8}
+.th-live .lv-track .pi-play::before{left:19px;top:15px;border-left-width:11px;border-top-width:8px;border-bottom-width:8px}
+.lv-view::before,.lv-view::after{width:12%}
+.lv-view::before{background:linear-gradient(90deg,rgba(18,13,9,.8),transparent)}.lv-view::after{background:linear-gradient(270deg,rgba(18,13,9,.8),transparent)}
+.lv-view{margin-top:-40px}
+.lv-top .chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);padding-right:40px}
+/* /tools */
+.th-tools{font-size:16px}
+.th-tools .tool-body p,.th-tools .bl p,.th-tools .lead,.th-tools .build-note{font-size:16px;line-height:1.7;color:rgba(228,238,255,.86)}
+.th-tools .bl p{font-size:15.5px}
+.th-tools{background:
+  linear-gradient(rgba(120,180,255,.05) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(120,180,255,.05) 1px,transparent 1px) 0 0/48px 48px,
+  linear-gradient(rgba(120,180,255,.028) 1px,transparent 1px) 0 0/12px 12px,linear-gradient(90deg,rgba(120,180,255,.028) 1px,transparent 1px) 0 0/12px 12px,#071225}
+.th-tools .lab,.th-tools .tool-head .lab{font-family:var(--sans);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:rgba(228,238,255,.9)}
+.th-tools .lab::before{content:"";width:34px;height:1px;background:#8fc4ff}
+.th-tools .tool-head h2{font-size:clamp(26px,2.6vw,36px)}
+@media (max-width:760px){.th-tools{font-size:15.5px}.th-tools .tool-body p,.th-tools .lead,.th-tools .build-note{font-size:15.5px}}
+
+/* ===== round 5b: gutters, quieter chips, primary CTA, doors, live header ===== */
+:root{--gut:clamp(20px,8vw,120px);--max:1280px}
+@media (max-width:760px){:root{--gut:20px}}
+.cp .cl li{border:0;border-radius:4px;background:color-mix(in srgb,currentColor 11%,transparent);font-size:12px;height:auto;padding:6px 12px;font-weight:500}
+.cp .cta{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600;font-size:15px;height:50px;padding:0 24px}
+.cp .cta::before{display:none}
+.cp .cta:hover{background:transparent;color:var(--ink)}
+.pg-head .more .cta,.build-cta .cta{width:auto;min-width:160px}
+.pg-head h1,.dp .pg-head h1,.lv-top h1{font-size:clamp(30px,3.05vw,44px);line-height:1.28;letter-spacing:-.025em}
+@media (max-width:760px){.pg-head h1,.dp .pg-head h1,.lv-top h1{font-size:24px;line-height:1.32}}
+.dr-vis{aspect-ratio:16/10}
+.dr-film{width:calc(100% - 64px)}
+.door-live .dr-vis::before,.door-live .dr-vis::after{width:16px;background-size:16px 22px}
+.door-live .dr-vis::before{left:8px}.door-live .dr-vis::after{right:8px}
+.door-tools .dr-vis{background:radial-gradient(ellipse 70% 60% at 50% 35%,rgba(90,160,255,.28),transparent 70%),#06101f}
+.door-tools svg{filter:drop-shadow(0 12px 30px rgba(80,150,255,.3))}
+.door-tools .w{fill:#0a1730}.door-tools .p{fill:rgba(130,185,255,.16)}
+.door-tools .dr-meta .n,.door-tools .dr-meta em{font-family:var(--sans)}
+/* /work/live: heading lives inside the pinned stage */
+.lv-top .sh{margin:0 0 14px}
+.lv-top .sh .lab{margin-bottom:8px}
+.lv-top .sh h1{margin:0}
+.lv-top .sh .lead{display:none}
+.lv-top .chips{margin-bottom:0}
+.lv-stage{padding-top:88px}
+@media (max-width:760px){.lv-view{margin-top:-24px}.lv-top .sh{margin-bottom:10px}}

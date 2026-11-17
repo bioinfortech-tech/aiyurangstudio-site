@@ -20,8 +20,8 @@ var HS=[84,102,118,130,138],HMIN=3,HFULL=140,BW=.16,TOTAL=6;
 var FLAGS={irisBlink:false};if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
 var VIDEO="media/hero.mp4",VIDEO_M="media/hero_m.mp4";
 /* reel segments [start,end] and the existing work each one stands for (id from data.js); used only for click-to-open */
-var SEG=[[4.3,7.0],[8.3,10.6],[11.2,14.0],[7.1,8.2],[.3,3.8]];
-var WORK=["ET5HAefyeU8","4CLaS99kBs0","wAwgIWlP6T0","4CLaS99kBs0","tprAaZzA1Sw"];
+var SEG=[[4.3,7.0],[7.1,8.2],[8.5,10.6],[11.2,12.6],[12.6,14.0]];
+var WORK=["ET5HAefyeU8","4CLaS99kBs0","4CLaS99kBs0","wAwgIWlP6T0","wAwgIWlP6T0"];
 
 function clamp(v,a,b){return v<a?a:v>b?b:v;}
 function ss(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}

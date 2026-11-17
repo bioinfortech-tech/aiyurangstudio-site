@@ -119,7 +119,7 @@ function themeAI(){
 
   /* cards: the thumbnail forms out of pixels, then the real image takes over */
   var pg=document.getElementById("pg");if(!pg||rm||!("IntersectionObserver" in window))return;
-  var steps=[10,18,34,64,128];
+  var steps=[10,22,48,96,0]; /* 0 = full resolution, then the real image takes over crisp */
   function pixelForm(card){
     var wrap=card.querySelector(".pi-img"),img=wrap&&wrap.querySelector("img");if(!img)return;
     var c=document.createElement("canvas");c.className="pix";c.setAttribute("aria-hidden","true");wrap.appendChild(c);
@@ -128,9 +128,9 @@ function themeAI(){
       var tmp=document.createElement("canvas"),tc=tmp.getContext("2d"),k=0;
       var iw=img.naturalWidth,ih=img.naturalHeight,sc=Math.max(w/iw,h/ih),sw=w/sc,sh=h/sc,sx=(iw-sw)/2,sy=(ih-sh)/2;
       (function tick(){
-        var n=steps[k],th=Math.max(2,Math.round(n*h/w));
+        var n=steps[k]||w,th=Math.max(2,Math.round(n*h/w));
         tmp.width=n;tmp.height=th;tc.drawImage(img,sx,sy,sw,sh,0,0,n,th);
-        x.imageSmoothingEnabled=false;x.clearRect(0,0,w,h);x.drawImage(tmp,0,0,n,th,0,0,w,h);
+        x.imageSmoothingEnabled=n>=w*0.9;x.clearRect(0,0,w,h);x.drawImage(tmp,0,0,n,th,0,0,w,h);
         k++;if(k<steps.length)setTimeout(tick,95);else{c.style.opacity="0";setTimeout(function(){c.remove();},700);}
       })();
     }
@@ -151,7 +151,9 @@ function themeLive(){
     '<div class="lv-foot" aria-hidden="true"><b id="lvN">01</b><span id="lvT"></span><div class="lv-bar"><u id="lvBar"></u></div></div></div>';
   head.parentNode.insertBefore(sec,head.nextSibling);
   var top=sec.querySelector(".lv-top"),view=sec.querySelector(".lv-view"),stage=sec.querySelector(".lv-stage");
+  var sh=head.querySelector(".sh");if(sh)top.appendChild(sh);
   if(chips)top.appendChild(chips);
+  head.style.display="none";
   view.insertBefore(pg,view.firstChild);pg.classList.add("lv-track");
   /* the CTA and the back link move below the strip */
   var tail=document.createElement("section");tail.className="sec lv-end";tail.innerHTML='<div class="wrap"></div>';
@@ -209,7 +211,7 @@ function themeLive(){
   function frame(now){
     raf=0;
     var dt=Math.min(.05,(now-last)/1000)||.016;last=now;
-    var p=clamp((scrollY-lvTop)/len,0,1);    var f=p*(items.length-1);
+    var p=clamp((scrollY-lvTop)/len,0,1),f=p*(items.length-1);
     /* a light pull toward the nearest frame, like a gate catching the film */
     var pull=rm?0:.35*Math.exp(-Math.abs(vel)/120);
     var fs=f+(Math.round(f)-f)*pull;
