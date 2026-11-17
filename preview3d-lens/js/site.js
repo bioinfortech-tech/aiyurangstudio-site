@@ -18,7 +18,7 @@ if(h1&&HEADLINE_INDEX>0){h1.innerHTML=HEADLINES[HEADLINE_INDEX].split("|").join(
 var pf=document.getElementById("pf");
 function pad(n){return (n<10?"0":"")+n;}
 var PREVIEW=6;
-V.slice(0,PREVIEW).forEach(function(v,i){
+if(pf)V.slice(0,PREVIEW).forEach(function(v,i){
   var b=document.createElement("button");b.type="button";b.className="pi rv"+(i<2?" big":"");
   b.setAttribute("aria-label",v[3]+" 재생");
   var src="https://img.youtube.com/vi/"+v[0]+"/maxresdefault.jpg";
@@ -31,7 +31,7 @@ V.slice(0,PREVIEW).forEach(function(v,i){
 });
 
 /* mobile carousel counter */
-(function(){
+if(pf)(function(){
   var c=document.createElement("div");c.className="pf-count";c.setAttribute("aria-hidden","true");
   c.innerHTML='<span class="pc-n"><b id="pcCur">01</b> / '+pad(Math.min(V.length,PREVIEW))+'</span><i class="pc-bar"><u id="pcBar"></u></i><span class="pc-hint">Swipe</span>';
   pf.parentNode.insertBefore(c,pf.nextSibling);
@@ -162,7 +162,7 @@ document.addEventListener("click",function(e){
   });}
 })();
 /* reveal */
-var els=[].slice.call(document.querySelectorAll(".sh,.sv li,.st li,.ci,.form,.frame,.tl,.tl-note"));
+var els=[].slice.call(document.querySelectorAll(".sh,.sv li,.st li,.ci,.form,.frame,.tl,.tl-note,.door"));
 els.forEach(function(e){e.classList.add("rv");});
 var all=[].slice.call(document.querySelectorAll(".rv"));
 if(!("IntersectionObserver" in window)||root.classList.contains("rm")){all.forEach(function(e){e.classList.add("in");});}

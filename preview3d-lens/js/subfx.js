@@ -66,12 +66,12 @@ function themeAI(){
     for(i=0;i<nf;i++){var d=i/nf*per,x,y;
       if(d<fw){x=cx-fw/2+d;y=cy-fh/2;}else if(d<fw+fh){x=cx+fw/2;y=cy-fh/2+(d-fw);}else if(d<2*fw+fh){x=cx+fw/2-(d-fw-fh);y=cy+fh/2;}else{x=cx-fw/2;y=cy+fh/2-(d-2*fw-fh);}
       T.push([x,y]);}
-    /* lens: two circles + 7-gon aperture */
-    var nc=Math.floor(N*.3);
-    for(i=0;i<nc;i++){var a=i/nc*Math.PI*2,r=i%2?cr:cr*.62;T.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}
-    var ng=N-T.length;
-    for(i=0;i<ng;i++){var k=i/ng*7,s=Math.floor(k),f=k-s,a1=s/7*Math.PI*2-Math.PI/2,a2=(s+1)/7*Math.PI*2-Math.PI/2,rr=cr*.32;
-      T.push([cx+(Math.cos(a1)*(1-f)+Math.cos(a2)*f)*rr,cy+(Math.sin(a1)*(1-f)+Math.sin(a2)*f)*rr]);}
+    /* iris: outer heptagon + inner heptagon + blade edges (same motif as the main shutter) */
+    var ng=N-T.length,n1=Math.floor(ng*.4),n2=Math.floor(ng*.3),n3=ng-n1-n2,ro=cr,ri=cr*.42;
+    function hept(R,rot,x){var k=x*7,s=Math.floor(k),f=k-s,a1=s/7*Math.PI*2+rot,a2=(s+1)/7*Math.PI*2+rot;return [cx+(Math.cos(a1)*(1-f)+Math.cos(a2)*f)*R,cy+(Math.sin(a1)*(1-f)+Math.sin(a2)*f)*R];}
+    for(i=0;i<n1;i++)T.push(hept(ro,-Math.PI/2,i/n1));
+    for(i=0;i<n2;i++)T.push(hept(ri,-Math.PI/2,i/n2));
+    for(i=0;i<n3;i++){var v=Math.floor(i/(n3/7)),f2=(i%Math.max(1,Math.floor(n3/7)))/Math.max(1,Math.floor(n3/7)),a3=v/7*Math.PI*2-Math.PI/2,rr=ri+(ro-ri)*f2;T.push([cx+Math.cos(a3)*rr,cy+Math.sin(a3)*rr]);}
     return T;
   }
   function size(){
@@ -109,8 +109,7 @@ function themeAI(){
   }
   function go(){if(rm){size();for(var i=0;i<N;i++){P[i].x=P[i].tx;P[i].y=P[i].ty;}stillDraw();return;}
     if(visible&&!document.hidden&&!running){running=true;raf=requestAnimationFrame(draw);}else if(!(visible&&!document.hidden)){running=false;}}
-  size();
-  addEventListener("resize",function(){size();if(rm)stillDraw();},{passive:true});
+  size();  addEventListener("resize",function(){size();if(rm)stillDraw();},{passive:true});
   if("IntersectionObserver" in window)new IntersectionObserver(function(es){visible=es[0].isIntersecting;go();},{threshold:0}).observe(head);
   document.addEventListener("visibilitychange",go);
   go();
@@ -165,7 +164,7 @@ function themeLive(){
       var id=V[n]&&V[n][0];
       if(id){
         ifr=document.createElement("iframe");ifr.className="gatevid";ifr.setAttribute("tabindex","-1");ifr.setAttribute("aria-hidden","true");ifr.setAttribute("title","");
-        ifr.allow="autoplay; encrypted-media";ifr.setAttribute("loading","lazy");ifr.addEventListener("load",function(){ifr&&ifr.classList.add("ld");});
+        ifr.allow="autoplay; encrypted-media";ifr.setAttribute("loading","lazy");var me=ifr;ifr.addEventListener("load",function(){setTimeout(function(){me.classList.add("ld");},1600);});
         ifr.src="https://www.youtube.com/embed/"+id+"?autoplay=1&mute=1&controls=0&loop=1&playlist="+id+"&playsinline=1&rel=0&modestbranding=1&disablekb=1";
         c.querySelector(".pi-img").appendChild(ifr);
       }
