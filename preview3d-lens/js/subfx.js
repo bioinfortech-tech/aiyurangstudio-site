@@ -212,15 +212,12 @@ function themeLive(){
     raf=0;
     var dt=Math.min(.05,(now-last)/1000)||.016;last=now;
     var p=clamp((scrollY-lvTop)/len,0,1),f=p*(items.length-1);
-    /* a light pull toward the nearest frame, like a gate catching the film */
-    var pull=rm?0:.35*Math.exp(-Math.abs(vel)/120);
-    var fs=f+(Math.round(f)-f)*pull;
-    tx=-fs*step;    var k=rm?1:1-Math.exp(-dt*7.5);
+    /* smooth: no snap toward frames (removed on request — it made the strip shudder) */
+    tx=-f*step;    var k=rm?1:1-Math.exp(-dt*9);
     x+=(tx-x)*k;
     var sp=Math.abs(tx-x)/Math.max(dt,.001);
-    var jy=0,jr=0;
-    if(!rm&&Math.abs(tx-x)>.6){var a=Math.min(1.6,sp*.0012);jy=(Math.random()-.5)*a*2;jr=(Math.random()-.5)*a*.06;}
-    pg.style.transform="translate3d("+x.toFixed(2)+"px,"+jy.toFixed(2)+"px,0) rotate("+jr.toFixed(3)+"deg)";
+    /* gate jitter removed on request — plain smooth sideways motion */
+    pg.style.transform="translate3d("+x.toFixed(2)+"px,0,0)";
     var cur=items.length?clamp(Math.round(-x/step),0,items.length-1):-1;
     var off=Math.abs(-x-cur*step);
     if(Math.abs(tx-x)<2&&off<step*.25)still+=dt;else still=0;
