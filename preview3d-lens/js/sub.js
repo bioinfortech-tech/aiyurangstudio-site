@@ -13,7 +13,7 @@ mnav.addEventListener("click",function(e){if(e.target.closest("a"))setMenu(false
 var pg=$("pg");
 var LIVE=document.body.getAttribute("data-list")==="live";
 if(pg&&(LIVE?window.YR_L:window.YR_V)){
-  var V=LIVE?window.YR_L:window.YR_V,CATS=[["all","전체"],["brand","광고 · 브랜드"],["product","제품"],["vh","버추얼 휴먼"],["short","숏폼"]];
+  var V=LIVE?window.YR_L:window.YR_V,CATS=LIVE&&window.YR_LC?window.YR_LC:[["all","전체"],["brand","광고 · 브랜드"],["product","제품"],["vh","버추얼 휴먼"],["short","숏폼"]];
   var m=$("modal"),host=$("mhost"),lastFocus=null;
   var openM=function(id,cat,t,d){lastFocus=document.activeElement;
     host.innerHTML='<iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" title="'+t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
@@ -45,7 +45,6 @@ if(pg&&(LIVE?window.YR_L:window.YR_V)){
     pg.appendChild(b);return b;
   });
   var chips=$("chips");
-  if(LIVE&&chips)chips.hidden=true;
   CATS.forEach(function(c){
     var n=c[0]==="all"?V.length:V.filter(function(v){return v[5]===c[0];}).length;
     if(!n)return; /* hide chips with no works */
@@ -56,7 +55,9 @@ if(pg&&(LIVE?window.YR_L:window.YR_V)){
     var b=e.target.closest(".chip");if(!b)return;var c=b.dataset.c;
     [].forEach.call(chips.children,function(x){x.setAttribute("aria-pressed",x===b);});
     items.forEach(function(it,i){it.hidden=!(c==="all"||V[i][5]===c);});
+    window.dispatchEvent(new Event("scroll"));
   });
+  if(LIVE&&chips.children[1])chips.children[1].click(); /* live: start on the first category (strongest) */
 }
 /* tools: waveform + review pin */
 var wv=$("wv"),NS="http://www.w3.org/2000/svg";
