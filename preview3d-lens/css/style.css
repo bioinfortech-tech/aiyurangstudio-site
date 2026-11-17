@@ -1403,3 +1403,9 @@ body.tx-mixed .tx-light .px{background:#fff}
 body.tx-mixed .tx-light .px-vis{background-color:#0B0F14;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:16px 16px;border-bottom:1px solid rgba(11,15,20,.12)}
 body.tx-mixed .tx-light .px-body{border-top:0}
 body.tx-mixed .tx-light .px-meta{color:#59636E}
+
+/* wordmark: — YURANGSTUDIO — (long hairlines, vertically centred, same tracking) */
+.logo{gap:14px}
+.logo::before,.logo::after{content:"";width:18px;height:1px;background:currentColor;opacity:.55;flex:none}
+.logo span{margin-right:-.34em}
+@media (max-width:760px){.logo{gap:10px}.logo::before,.logo::after{width:14px}}
