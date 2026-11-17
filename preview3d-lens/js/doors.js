@@ -38,3 +38,12 @@ if("IntersectionObserver" in window)new IntersectionObserver(function(es){
   if(visible&&!running){running=true;t0=performance.now();raf=requestAnimationFrame(draw);}else if(!visible){running=false;}
 },{threshold:.2}).observe(cv);
 })();
+/* readout counters in the programs section: count up once when scrolled into view */
+(function(){
+  var rm=document.documentElement.classList.contains("rm")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var nums=[].slice.call(document.querySelectorAll("[data-count]"));if(!nums.length)return;
+  if(rm||!("IntersectionObserver" in window)){nums.forEach(function(n){n.textContent=n.getAttribute("data-count");});return;}
+  function run(el){var to=+el.getAttribute("data-count"),t0=performance.now();(function step(now){var t=Math.min(1,(now-t0)/1500),e=1-Math.pow(1-t,3);el.textContent=Math.round(to*e);if(t<1)requestAnimationFrame(step);})(t0);}
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){io.unobserve(en.target);run(en.target);}});},{threshold:.4});
+  nums.forEach(function(n){io.observe(n);});
+})();

@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+KR:wght@500;600&display=swap">
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+KR:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../css/style.css?v=8">
 <script>document.documentElement.classList.add("js");if(matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("rm");</script>
 </head>
 <body class="dp th-tools">
@@ -29,42 +29,57 @@
   <a href="https://review.aiyurangstudio.com" target="_blank" rel="noopener">피드백 ↗</a>
 </nav>
 <main id="main">
-  <section class="sec pg-head tl-hero">
-    <div class="wrap tl-hero-g">
-      <header class="sh tl-copy">
+  <section class="tx-hero">
+    <div class="tx-wrap g12">
+      <header class="tx-copy">
         <p class="lab">Programs &amp; Web</p>
         <h1>프로그램·웹페이지 제작</h1>
         <p class="lead">영상을 만들던 손으로, 프로그램과 게임도 만듭니다. 직접 만든 소프트웨어를 내놓고, 필요한 프로그램과 웹페이지를 맞춤 제작합니다.</p>
-        <p class="more build-cta"><a class="cta solid" href="../#contact"><span>프로젝트 문의</span><i aria-hidden="true"></i></a><a class="tl-ghost" href="#products">우리 제품 <span aria-hidden="true">&darr;</span></a></p>
+        <p class="tx-act"><a class="cta solid" href="../#contact"><span>프로젝트 문의</span><i aria-hidden="true"></i></a><a class="tx-link" href="#products">우리 제품 <span aria-hidden="true">&darr;</span></a></p>
       </header>
-      <div class="tl-stack" aria-hidden="true">
-        <div class="wn wn-a"><div class="wb"><i></i><i></i><i></i><span>오토에디터</span></div>
-          <div class="wc"><div class="ed-top"><div class="ed-pv"><b></b></div><div class="ed-in"><u></u><u></u><u></u><u></u></div></div>
-            <div class="ed-tl"><div class="tr"><s style="left:2%;width:26%"></s><s style="left:31%;width:14%"></s><s style="left:48%;width:30%"></s><s style="left:81%;width:17%"></s></div>
-              <div class="tr t2"><s style="left:6%;width:20%"></s><s style="left:34%;width:34%"></s><s style="left:72%;width:12%"></s></div>
-              <div class="tr t3"><s style="left:2%;width:96%"></s></div><div class="ed-ph"></div></div></div></div>
-        <div class="wn wn-b"><div class="wb"><i></i><i></i><i></i><span>로움 · Roam</span></div>
-          <div class="wc"><div class="rm-bar"><s></s><u></u></div><div class="rm-shield"><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M32 6l24 9v18c0 16-10 27-24 33C18 60 8 49 8 33V15z"/><path d="M21 36l8 8 15-17"/></svg></div></div></div>
-        <div class="wn wn-c"><div class="wb"><i></i><i></i><i></i><span>원격 도우미</span></div>
-          <div class="wc"><div class="rd"><div class="rd-w"></div><div class="rd-w w2"></div><svg class="rd-cur" viewBox="0 0 24 28" aria-hidden="true"><path d="M3 2v20l5-5 4 9 4-2-4-9h8z"/></svg></div></div></div>
+      <div class="tx-vis" aria-hidden="true">
+        <div class="tt"><div class="tt-bar"><i></i><i></i><i></i><span>terminal</span></div>
+          <pre><b>$</b> build --target web
+<em>ok</em>  compiled
+<em>ok</em>  checked
+<b>$</b> ship<u></u></pre></div>
+        <div class="rw"><div class="rw-tabs"><span class="on">새 탭</span><span>로움</span><i>+</i></div>
+          <div class="rw-bar"><s></s><s></s><div class="rw-url"><span>https://</span></div><div class="rw-chip"><i></i>추적 차단 · <b data-count="42">0</b></div></div>
+          <div class="rw-body"><div class="rw-l"><u></u><u></u><u></u><u></u></div><div class="rw-r"><div class="rw-blk"></div><div class="rw-blk"></div><div class="rw-blk"></div><div class="rw-blk"></div></div></div></div>
+        <span class="an a1">FIG. 01</span><span class="an a2">X 128 · Y 072</span><i class="cr c1"></i><i class="cr c2"></i><i class="cr c3"></i><i class="cr c4"></i>
       </div>
     </div>
   </section>
 
-  <section class="sec tl-sec" id="products">
-    <div class="wrap">
-      <header class="sh"><p class="lab">Our Products</p><h2>우리 제품</h2></header>
-      <ul class="pdgrid"><li class="pd"><span class="pd-badge">곧 공개</span><div class="pd-vis"><svg viewBox="0 0 160 120" aria-hidden="true"><rect x="14" y="14" width="132" height="92" rx="8"/><path d="M14 32h132"/><circle cx="24" cy="23" r="2"/><circle cx="32" cy="23" r="2"/><circle cx="40" cy="23" r="2"/><rect x="54" y="18" width="78" height="10" rx="5"/><path class="a" d="M80 54l22 8v14c0 12-9 20-22 25-13-5-22-13-22-25V62z"/><path class="a" d="M70 78l7 7 13-15"/></svg></div><div class="pd-body"><h3>로움 <em>Roam</em></h3><p>추적을 막는 개인정보 보호 브라우저</p></div></li><li class="pd"><span class="pd-badge">곧 공개</span><div class="pd-vis"><svg viewBox="0 0 160 120" aria-hidden="true"><rect x="20" y="14" width="120" height="76" rx="6"/><path d="M62 102h36M80 90v12"/><rect x="32" y="26" width="46" height="30" rx="3"/><path d="M32 66h96M32 76h64"/><path class="a" d="M96 40l0 28 8-7 6 13 5-2-6-13 10-1z"/></svg></div><div class="pd-body"><h3>원격 도우미</h3><p>어디서든 내 컴퓨터를 보고 조종하는 원격 프로그램</p></div></li><li class="pd"><span class="pd-badge">곧 공개</span><div class="pd-vis"><svg viewBox="0 0 160 120" aria-hidden="true"><rect x="14" y="12" width="132" height="62" rx="6"/><path d="M24 62h112"/><rect x="24" y="22" width="52" height="32" rx="3"/><path d="M86 26h50M86 36h38M86 46h44"/><rect x="14" y="84" width="132" height="26" rx="4"/><path d="M22 92h34M62 92h22M90 92h40M22 102h58M86 102h44"/><path class="a" d="M70 80v34"/></svg></div><div class="pd-body"><h3>오토에디터</h3><p>영상 컷·자막을 자동으로 잡아 주는 편집 프로그램</p></div></li><li class="pd pd-game"><span class="pd-badge">곧 공개</span><div class="pd-vis"><svg viewBox="0 0 160 120" aria-hidden="true"><path d="M44 44h72c14 0 22 12 26 34 2 12-4 20-14 20-8 0-12-6-18-14H50c-6 8-10 14-18 14-10 0-16-8-14-20 4-22 12-34 26-34z"/><path d="M52 64h16M60 56v16"/><circle class="a" cx="108" cy="60" r="4"/><circle class="a" cx="120" cy="70" r="4"/><circle cx="96" cy="70" r="3"/></svg></div><div class="pd-body"><h3>게임</h3><p>Coming soon</p></div></li></ul>
+  <section class="tx-sec" id="products">
+    <div class="tx-wrap">
+      <header class="tx-sh"><p class="lab">Our Products</p><h2>우리 제품</h2></header>
+      <ul class="bento g12">
+        <li class="px px-roam"><div class="px-meta"><span class="mono">01 / ROAM</span><span class="chip"><i></i>STATUS: 곧 공개</span></div>
+          <div class="px-vis" aria-hidden="true"><span class="an a3">UI / BROWSER</span><div class="rw rw-sm"><div class="rw-tabs"><span class="on">새 탭</span><span>+</span></div><div class="rw-bar"><s></s><s></s><div class="rw-url"><span>https://</span></div><div class="rw-chip"><i></i>추적 차단 · <b data-count="42">0</b></div></div><div class="rw-body"><div class="rw-l"><u></u><u></u><u></u></div><div class="rw-r"><div class="rw-blk"></div><div class="rw-blk"></div><div class="rw-blk"></div><div class="rw-blk"></div></div></div></div></div>
+          <div class="px-body"><h3>로움 <em>Roam</em></h3><p>추적을 막는 개인정보 보호 브라우저</p><span class="ver mono">v0.x</span></div></li>
+        <li class="px px-remote"><div class="px-meta"><span class="mono">02</span><span class="chip"><i></i>STATUS: 곧 공개</span></div>
+          <div class="px-vis" aria-hidden="true"><span class="an a3">UI / REMOTE</span><div class="scr"><div class="scr-top"><span class="rec"><i></i>REC</span><span class="mono">remote</span></div><div class="scr-body"><div class="scr-w"></div><div class="scr-w w2"></div><div class="scr-bar"></div><svg class="scr-cur" viewBox="0 0 24 28"><path d="M3 2v20l5-5 4 9 4-2-4-9h8z"/></svg></div></div></div>
+          <div class="px-body"><h3>원격 도우미</h3><p>어디서든 내 컴퓨터를 보고 조종하는 원격 프로그램</p><span class="ver mono">v0.x</span></div></li>
+        <li class="px px-auto"><div class="px-meta"><span class="mono">03</span><span class="chip"><i></i>STATUS: 곧 공개</span></div>
+          <div class="px-vis" aria-hidden="true"><span class="an a3">UI / TIMELINE</span><div class="tlx"><div class="tlx-r"><span class="mono">00:00</span><span class="mono">00:30</span></div><div class="tlx-t"><s style="left:0;width:28%"></s><s style="left:31%;width:18%"></s><s style="left:52%;width:30%"></s><s style="left:85%;width:15%"></s></div><div class="tlx-t t2"><s style="left:6%;width:22%"></s><s style="left:34%;width:36%"></s><s style="left:74%;width:12%"></s></div><div class="tlx-w"><u style="--h:30%"></u><u style="--h:60%"></u><u style="--h:44%"></u><u style="--h:80%"></u><u style="--h:52%"></u><u style="--h:70%"></u><u style="--h:36%"></u><u style="--h:64%"></u><u style="--h:48%"></u><u style="--h:78%"></u><u style="--h:40%"></u><u style="--h:58%"></u><u style="--h:32%"></u><u style="--h:68%"></u><u style="--h:46%"></u><u style="--h:74%"></u><u style="--h:38%"></u><u style="--h:62%"></u></div><div class="tlx-ph"></div></div></div>
+          <div class="px-body"><h3>오토에디터</h3><p>영상 컷·자막을 자동으로 잡아 주는 편집 프로그램</p><span class="ver mono">v0.x</span></div></li>
+        <li class="px px-game"><div class="px-meta"><span class="mono">04</span></div>
+          <div class="gm-body"><h3>게임</h3><p class="mono">Coming soon<u></u></p></div>
+          <div class="gm-px" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="chip"><i></i>STATUS: 곧 공개</span></li>
+      </ul>
     </div>
   </section>
 
-  <section class="sec tl-sec" id="custom">
-    <div class="wrap">
-      <header class="sh"><p class="lab">Custom Build</p><h2>맞춤 제작</h2></header>
-      <ul class="bl">
-        <li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="5" width="26" height="22" rx="2"/><path d="M3 11h26"/><circle cx="7" cy="8" r=".8"/><circle cx="10" cy="8" r=".8"/><path d="M8 16h9M8 20h14"/></svg></span><span class="n">01</span><h3>홈페이지 · 랜딩페이지</h3><p>소개 페이지, 포트폴리오, 행사·캠페인용 한 장짜리 페이지를 만듭니다.</p></li>
-        <li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 12a10 10 0 0 1 17-5l3 3"/><path d="M26 5v5h-5"/><path d="M26 20a10 10 0 0 1-17 5l-3-3"/><path d="M6 27v-5h5"/></svg></span><span class="n">02</span><h3>업무 자동화 프로그램</h3><p>반복되는 파일 정리, 변환, 업로드 같은 일을 맡아 주는 작은 프로그램을 만듭니다.</p></li>
-        <li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="8" width="24" height="17" rx="2"/><path d="M11 8V6h10v2"/><path d="M4 16h24"/><path d="M14 16v3h4v-3"/></svg></span><span class="n">03</span><h3>사내용 간단한 도구</h3><p>팀에서 쓰는 검토, 정리, 공유용 간단한 웹·데스크톱 도구를 만듭니다.</p></li>
+  <section class="tx-sec" id="custom">
+    <div class="tx-wrap">
+      <header class="tx-sh"><p class="lab">Custom Build</p><h2>맞춤 제작</h2></header>
+      <ul class="cbg g12">
+        <li class="cb"><div class="cb-meta"><span class="mono">01</span><span class="mono dim">WEB</span></div><div class="cb-vis" aria-hidden="true"><div class="wf"><u class="h"></u><div><u></u><u></u><u></u></div><u class="f"></u></div></div><h3>홈페이지 · 랜딩페이지</h3><p>소개 페이지, 포트폴리오, 행사·캠페인용 한 장짜리 페이지를 만듭니다.</p></li>
+        <li class="cb"><div class="cb-meta"><span class="mono">02</span><span class="mono dim">AUTOMATION</span></div><div class="cb-vis" aria-hidden="true"><div class="fl"><span>in</span><i></i><span>run</span><i></i><span class="ok">out</span></div></div><h3>업무 자동화 프로그램</h3><p>반복되는 파일 정리, 변환, 업로드 같은 일을 맡아 주는 작은 프로그램을 만듭니다.</p></li>
+        <li class="cb"><div class="cb-meta"><span class="mono">03</span><span class="mono dim">TOOLS</span></div><div class="cb-vis" aria-hidden="true"><div class="pn"><div><s class="on"></s><u></u></div><div><s></s><u></u></div><div><s class="on"></s><u></u></div></div></div><h3>사내용 간단한 도구</h3><p>팀에서 쓰는 검토, 정리, 공유용 간단한 웹·데스크톱 도구를 만듭니다.</p></li>
+        <li class="cb cb-note"><div class="cb-meta"><span class="mono">04</span><span class="mono dim">SCOPE</span></div><p class="note">필요한 범위와 방식은 문의해 주시면 함께 정리합니다.</p><a class="tx-link" href="../#contact">프로젝트 문의 <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
       <ol class="st flow-src" data-flow="talk,design,build,ship">
         <li><span class="n">I</span><h3>상담</h3><p>필요한 것을 듣고 범위를 정리합니다.</p></li>
@@ -72,27 +87,24 @@
         <li><span class="n">III</span><h3>개발</h3><p>꼭 필요한 기능부터 만듭니다.</p></li>
         <li><span class="n">IV</span><h3>전달 · 수정</h3><p>써 보며 고칠 부분을 다듬어 전달합니다.</p></li>
       </ol>
-      <p class="build-note">필요한 범위와 방식은 문의해 주시면 함께 정리합니다.</p>
     </div>
   </section>
 
-  <section class="sec tl-sec" id="news">
-    <div class="wrap tl-news">
-      <div><p class="lab">News</p><h2>새 프로그램 소식 받기</h2><p class="build-note">소식을 받고 싶다면 문의로 남겨 주세요.</p></div>
-      <a class="tl-ghost" href="../#contact">문의로 이동 <span aria-hidden="true">&rarr;</span></a>
-    </div>
+  <section class="tx-sec" id="news">
+    <div class="tx-wrap"><div class="tx-news">
+      <div><p class="lab">News</p><h2>새 프로그램 소식 받기</h2><p class="sub">소식을 받고 싶다면 문의로 남겨 주세요.</p></div>
+      <a class="tx-link" href="../#contact">문의로 이동 <span aria-hidden="true">&rarr;</span></a>
+    </div></div>
   </section>
 
-  <section class="sec tl-cta">
-    <div class="wrap tl-band">
-      <div>
-        <p class="lab">Start a Project</p>
-        <h2>다음 장면을<br>함께 만듭니다.</h2>
-        <p class="build-note">만들고 싶은 프로그램이나 웹페이지가 있다면 편하게 문의해 주세요.</p>
+  <section class="tx-sec tx-end">
+    <div class="tx-wrap">
+      <div class="tx-band">
+        <div><p class="lab">Start a Project</p><h2>다음 장면을<br>함께 만듭니다.</h2><p class="sub">만들고 싶은 프로그램이나 웹페이지가 있다면 편하게 문의해 주세요.</p></div>
+        <p class="more"><a class="cta solid" href="../#contact"><span>프로젝트 문의</span><i aria-hidden="true"></i></a></p>
       </div>
-      <p class="more"><a class="cta solid" href="../#contact"><span>프로젝트 문의</span><i aria-hidden="true"></i></a></p>
+      <p class="tx-foot mono">우리가 영상 작업에 쓰는 도구: 리뷰 · 피드백, 멀티 컴퓨터 파이프라인, 자동 배포</p>
     </div>
-    <p class="wrap tl-foot">우리가 영상 작업에 쓰는 도구: 리뷰 · 피드백, 멀티 컴퓨터 파이프라인, 자동 배포</p>
   </section>
 </main>
 <footer class="ft">
@@ -103,8 +115,8 @@
   </div>
 </footer>
 
-<script src="../js/sub.js"></script>
-<script src="../js/subfx.js"></script>
-<script src="../js/flow.js"></script>
+<script src="../js/sub.js?v=8"></script>
+<script src="../js/subfx.js?v=8"></script>
+<script src="../js/flow.js?v=8"></script>
 </body>
 </html>

@@ -242,11 +242,15 @@ function themeLive(){
 
 /* ---------- /tools : blueprint, UI windows assemble ---------- */
 function themeTools(){
-  var tools=[].slice.call(document.querySelectorAll(".tool"));
-  tools.forEach(function(t){
-    var fig=t.querySelector(".tool-fig"),lab=t.querySelector(".tool-head .lab");
-    if(fig&&lab)fig.setAttribute("data-t",lab.textContent.replace(/\s*·\s*/g," / ").toLowerCase().replace(/\s+/g,"_"));
-  });
+  /* tiny data readouts count up once when they scroll into view (single smooth pass) */
+  var nums=[].slice.call(document.querySelectorAll("[data-count]"));
+  function run(el){
+    var to=+el.getAttribute("data-count"),t0=performance.now(),d=1500;
+    (function step(now){var t=Math.min(1,(now-t0)/d),e=1-Math.pow(1-t,3);el.textContent=Math.round(to*e);if(t<1)requestAnimationFrame(step);})(t0);
+  }
+  if(rm||!("IntersectionObserver" in window)){nums.forEach(function(n){n.textContent=n.getAttribute("data-count");});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){io.unobserve(en.target);run(en.target);}});},{threshold:.4});
+  nums.forEach(function(n){io.observe(n);});
 }
 
 /* ---------- shared: blink when a piece opens / closes ---------- */
