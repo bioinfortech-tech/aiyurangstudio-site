@@ -113,8 +113,8 @@ function start(THREE,RoomEnvironment){
     for(var i=0;i<120;i++){var a=i/120*Math.PI*2,long=i%10===0,mid=i%5===0;x.save();x.rotate(a);x.fillStyle="rgba(8,8,10,.92)";
       var L=long?(rOut-rIn)*.78:mid?(rOut-rIn)*.55:(rOut-rIn)*.34,W=long?5:3;x.fillRect(-W/2,-(rOut-3),W,L);x.restore();}
     x.font="600 34px Pretendard Variable, Pretendard, sans-serif";x.fillStyle="rgba(8,8,10,.9)";x.textAlign="center";x.textBaseline="middle";
-    var label="YURANG STUDIO",rt=(rOut+rIn)/2-6;
-    for(var j=0;j<label.length;j++){var ang=(j-(label.length-1)/2)*.062;x.save();x.rotate(ang);x.translate(0,-rt);x.fillText(label[j],0,0);x.restore();}
+    var label="YURANGSTUDIO",rt=(rOut+rIn)/2-6;
+    for(var j=0;j<label.length;j++){var ang=(j-(label.length-1)/2)*.057;x.save();x.rotate(ang);x.translate(0,-rt);x.fillText(label[j],0,0);x.restore();}
   })();
   var egTex=new THREE.CanvasTexture(eg);egTex.colorSpace=THREE.SRGBColorSpace;egTex.anisotropy=8;
   var egMesh=new THREE.Mesh(new THREE.CircleGeometry(1.14,128),new THREE.MeshBasicMaterial({map:egTex,transparent:true,depthWrite:false,toneMapped:false,opacity:.88}));
