@@ -160,8 +160,8 @@ html:not(.js) .rv{opacity:1;transform:none}
 .field ::placeholder{color:rgba(243,238,228,.28)}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink)}
 .field select:invalid{color:rgba(243,238,228,.28)}
-.form .cta{margin-top:10px;height:56px;padding:0 30px 0 32px;cursor:pointer}
-.note{font-size:13px;color:var(--mute);margin-top:20px}
+.form .cta{display:flex;width:fit-content;justify-content:center;margin:10px auto 0;height:56px;padding:0 30px 0 32px;cursor:pointer}
+.note{font-size:13px;color:var(--mute);margin-top:20px;text-align:center}
 .note a{border-bottom:1px solid var(--line);color:var(--ink)}
 .ok{padding:48px 0}.ok h3{font-size:clamp(26px,3vw,40px);letter-spacing:-.04em;margin-bottom:14px}.ok p{color:var(--mute)}
 
@@ -303,7 +303,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   .field input,.field select{min-height:44px;padding:8px 0 10px}
   .field textarea{min-height:84px}
   .row2.keep2{grid-template-columns:1fr 1fr;gap:0 16px}
-  .form .cta{width:100%;justify-content:space-between;height:54px}
+  .form .cta{width:100%;justify-content:center;gap:14px;height:54px}
   .note{margin-top:14px}
   .ft{padding-top:24px}
 }
