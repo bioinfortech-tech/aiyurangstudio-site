@@ -18,10 +18,7 @@ var DARK="#0B0B0D";
 var BGL=COL.map(function(c){return toLch(c.bg);}),INKL=COL.map(function(c){return toLch(c.ink);}),DARKL=toLch("#0B0B0D");
 var HS=[84,102,118,130,138],HMIN=3,HFULL=140,BW=.16,TOTAL=6;
 var FLAGS={irisBlink:false};if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
-var VIDEO="media/hero.mp4",VIDEO_M="media/hero_m.mp4";
-/* reel segments [start,end] and the existing work each one stands for (id from data.js); used only for click-to-open */
-var SEG=[[4.3,7.0],[7.1,8.2],[8.5,10.6],[11.2,12.6],[12.6,14.0]];
-var WORK=["ET5HAefyeU8","4CLaS99kBs0","4CLaS99kBs0","wAwgIWlP6T0","wAwgIWlP6T0"];
+var VIDEO="media/promo.mp4",VIDEO_M="media/promo_m.mp4",POSTER="media/promo_poster.jpg"; /* studio promo film, one continuous muted loop */
 
 function clamp(v,a,b){return v<a?a:v>b?b:v;}
 function ss(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
@@ -89,12 +86,10 @@ function setAperture(h){
 var vOK=false,vWant=false,vTried=false,seg=0;
 function vInit(){
   if(vTried)return;vTried=true;
-  video.muted=true;video.defaultMuted=true;video.playsInline=true;video.setAttribute("playsinline","");video.setAttribute("muted","");video.loop=false;
+  video.muted=true;video.defaultMuted=true;video.playsInline=true;video.setAttribute("playsinline","");video.setAttribute("muted","");video.loop=true;video.poster=POSTER;
   var fb=false;
   video.addEventListener("error",function(){if(small&&!fb){fb=true;video.src=VIDEO;video.load();}else vOK=false;});
-  video.addEventListener("loadedmetadata",function(){vOK=true;try{video.currentTime=reduce?0:SEG[seg][0];}catch(e){}vSync();});
-  video.addEventListener("timeupdate",function(){if(!reduce&&video.currentTime>=SEG[seg][1]){try{video.currentTime=SEG[seg][0];}catch(e){}}});
-  video.addEventListener("ended",function(){try{video.currentTime=reduce?0:SEG[seg][0];}catch(e){}vSync();});
+  video.addEventListener("loadedmetadata",function(){vOK=true;vSync();});
   video.preload="metadata";
   video.src=small?VIDEO_M:VIDEO;
 }
@@ -104,14 +99,7 @@ function vSync(){
   if(want&&video.paused){var pr=video.play();if(pr&&pr.catch)pr.catch(function(){});}
   else if(!want&&!video.paused)video.pause();
 }
-function setSeg(i){if(i===seg)return;seg=i;if(vOK&&!reduce){try{video.currentTime=SEG[i][0];}catch(e){}}}
-function curWork(){
-  var i=seg;
-  if(reduce&&vOK){var t=video.currentTime;i=0;for(var k=0;k<SEG.length;k++){if(t>=SEG[k][0]-.3)i=k;}}
-  var V=(window.YR&&window.YR.V)||[];
-  for(var j=0;j<V.length;j++){if(V[j][0]===WORK[i])return V[j];}
-  return V[0];
-}
+function setSeg(){}
 if("IntersectionObserver" in window){
   new IntersectionObserver(function(es){var on=es[0].isIntersecting;if(on)vInit();vWant=on;vSync();},{rootMargin:"60% 0px 60% 0px"}).observe(chap);
 }else{vInit();vWant=true;}
@@ -173,7 +161,7 @@ function update(){
     el.style.transform="translate3d(0,"+y.toFixed(1)+"px,0)";
     el.style.visibility=o<=.01?"hidden":"visible";
     el.style.pointerEvents=o>.6?"auto":"none";
-    if(el.classList.contains("fl"))el.classList.toggle("go",o>.55);
+    if(el.classList.contains("pfl"))el.classList.toggle("go",o>.55);
   }
   /* iris: WebGL when available, SVG otherwise */
   if(window.YR_I3&&window.YR_I3.ready){
@@ -192,7 +180,7 @@ function update(){
   cs.style.setProperty("--pgo",(1-ss(4.75,4.95,U)).toFixed(2));
   var act=U>.25&&U<4.9;
   ob.style.pointerEvents=act?"auto":"none";
-  cs.classList.toggle("click",act);
+  
 }
 function kick(){if(!raf)raf=requestAnimationFrame(update);}
 window.YR_SH={setSeg:function(i){setSeg(i);},refresh:function(){measure();kick();}};
@@ -203,8 +191,4 @@ if(window.ResizeObserver)new ResizeObserver(function(){measure();kick();}).obser
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measure();kick();});
 addEventListener("load",function(){measure();kick();});
 
-/* click the iris = open the current piece (same modal as the work cards) */
-ob.addEventListener("click",function(){
-  var v=curWork();if(v&&window.YR&&window.YR.open)window.YR.open(v[0],v[2],v[3],v[4]);
-});
 })();

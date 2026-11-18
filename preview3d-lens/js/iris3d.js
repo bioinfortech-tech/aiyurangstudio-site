@@ -25,7 +25,7 @@ function start(THREE,RoomEnvironment){
   var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:"high-performance",stencil:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
   renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
   renderer.setClearColor(0x000000,0);
   var scene=new THREE.Scene();
@@ -36,12 +36,12 @@ function start(THREE,RoomEnvironment){
   var camera=new THREE.PerspectiveCamera(FOV,1,.1,60);camera.position.set(0,0,DIST);
 
   /* ---- lights ---- */
-  var key=new THREE.DirectionalLight(0xffffff,1.9);key.position.set(-3.6,4.4,4.2);key.castShadow=true;
+  var key=new THREE.DirectionalLight(0xfff6ea,1.55);key.position.set(-3.6,4.4,4.2);key.castShadow=true;
   key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-1.5;key.shadow.camera.right=1.5;key.shadow.camera.top=1.5;key.shadow.camera.bottom=-1.5;
   key.shadow.camera.near=2;key.shadow.camera.far=14;key.shadow.bias=-.0002;key.shadow.normalBias=.006;
   scene.add(key);scene.add(key.target);
-  var rim=new THREE.DirectionalLight(0xe6ecff,1.5);rim.position.set(4.5,.8,2.2);scene.add(rim);
-  var rim2=new THREE.DirectionalLight(0xffffff,.7);rim2.position.set(.5,-4,2.5);scene.add(rim2);
+  var rim=new THREE.DirectionalLight(0xdfe7ff,1.0);rim.position.set(4.5,.8,2.2);scene.add(rim);
+  var rim2=new THREE.DirectionalLight(0xffffff,.45);rim2.position.set(.5,-4,2.5);scene.add(rim2);
 
   var iris=new THREE.Group();scene.add(iris);
   /* everything inside the housing is clipped to the aperture circle with the stencil buffer */
@@ -61,8 +61,9 @@ function start(THREE,RoomEnvironment){
     var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=4;return t;
   }
   var brush=lineTex(1024,1024,false,3200,7);brush.repeat.set(1.3,1.3);
+  var turn=lineTex(64,1024,false,2600,19);turn.repeat.set(1,2);
   var knurlC=document.createElement("canvas");knurlC.width=1024;knurlC.height=8;
-  (function(){var x=knurlC.getContext("2d"),n=150;for(var i=0;i<n;i++){var g=x.createLinearGradient(i*1024/n,0,(i+1)*1024/n,0);g.addColorStop(0,"#202020");g.addColorStop(.5,"#f0f0f0");g.addColorStop(1,"#202020");x.fillStyle=g;x.fillRect(i*1024/n,0,1024/n+1,8);}})();
+  (function(){var x=knurlC.getContext("2d"),n=340;for(var i=0;i<n;i++){var g=x.createLinearGradient(i*1024/n,0,(i+1)*1024/n,0);g.addColorStop(0,"#181818");g.addColorStop(.5,"#dcdcdc");g.addColorStop(1,"#181818");x.fillStyle=g;x.fillRect(i*1024/n,0,1024/n+1,8);}})();
   var knurl=new THREE.CanvasTexture(knurlC);knurl.wrapS=THREE.RepeatWrapping;knurl.colorSpace=THREE.NoColorSpace;
 
   /* ---- blades ---- */
@@ -85,11 +86,11 @@ function start(THREE,RoomEnvironment){
     var t=(LUT[lo]-a)/(LUT[lo]-LUT[hi]);return PHIMAX*(lo+t)/LN;
   }
   var bladeGeo=new THREE.ExtrudeGeometry(bladeShape(),{depth:.006,bevelEnabled:true,bevelThickness:.0034,bevelSize:.0055,bevelSegments:3,curveSegments:24});
-  var bladeMat=clip(new THREE.MeshPhysicalMaterial({color:0x4f545f,metalness:.95,roughness:.3,roughnessMap:brush,bumpMap:brush,bumpScale:.08,clearcoat:.6,clearcoatRoughness:.22,anisotropy:.55,anisotropyRotation:0,envMapIntensity:2.8}));
+  var bladeMat=clip(new THREE.MeshPhysicalMaterial({color:0x2a2c32,metalness:.92,roughness:.44,roughnessMap:brush,bumpMap:brush,bumpScale:.08,clearcoat:0,anisotropy:.6,anisotropyRotation:0,envMapIntensity:1.5}));
   /* per-blade read: bright machined edge, darker toward the outside, so the overlapping leaves separate */
   bladeMat.onBeforeCompile=function(sh){
     sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <begin_vertex>','#include <begin_vertex>\nvLY=position.y+'+PY.toFixed(3)+'-'+D0.toFixed(3)+';');
-    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb*=mix(1.5,.5,smoothstep(0.,.55,vLY));').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=vec3(.5,.52,.58)*(1.-smoothstep(0.,.014,vLY))*step(-.02,vLY);');
+    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb*=mix(1.25,.55,smoothstep(0.,.55,vLY));').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=vec3(.2,.21,.24)*(1.-smoothstep(0.,.012,vLY))*step(-.02,vLY);');
   };
   var LAYER=[0,1,2,3,4,5,6],Z0=-.04,DZ=.019;
   var blades=[],holders=[];
@@ -101,23 +102,30 @@ function start(THREE,RoomEnvironment){
   /* ---- housing ---- */
   var ringPts=[[.93,-.07],[.93,.035],[.955,.065],[1.0,.074],[1.075,.074],[1.115,.062],[1.14,.03],[1.14,-.07]].map(function(p){return new THREE.Vector2(p[0],p[1]);});
   ringPts.reverse();var ringGeo=new THREE.LatheGeometry(ringPts,160);
-  var ringMat=new THREE.MeshPhysicalMaterial({color:0xe4e7ec,metalness:1,roughness:.2,clearcoat:.5,clearcoatRoughness:.12,envMapIntensity:2.2});
+  var ringMat=new THREE.MeshPhysicalMaterial({color:0x24262b,metalness:1,roughness:.38,roughnessMap:turn,bumpMap:turn,bumpScale:.5,anisotropy:.65,anisotropyRotation:Math.PI/2,clearcoat:0,envMapIntensity:.95});
   ringMat.side=THREE.DoubleSide;var ring=new THREE.Mesh(ringGeo,ringMat);ring.rotation.x=Math.PI/2;ring.castShadow=true;ring.receiveShadow=true;iris.add(ring);
-  var kn=new THREE.Mesh(new THREE.CylinderGeometry(1.143,1.143,.13,180,1,true),new THREE.MeshPhysicalMaterial({color:0x9a9da6,metalness:1,roughness:.4,bumpMap:knurl,bumpScale:1.1,clearcoat:.15,envMapIntensity:2.4,side:THREE.DoubleSide}));
+  var kn=new THREE.Mesh(new THREE.CylinderGeometry(1.143,1.143,.13,180,1,true),new THREE.MeshPhysicalMaterial({color:0x3a3d44,metalness:1,roughness:.5,bumpMap:knurl,bumpScale:1.0,clearcoat:0,envMapIntensity:1.0,side:THREE.DoubleSide}));
   kn.rotation.x=Math.PI/2;kn.position.z=-.005;iris.add(kn);
+  /* satin titanium inner ring between housing and blades, plus a thin bright chamfer line on the outer edge */
+  var inPts=[[.915,-.03],[.915,.04],[.935,.062],[.962,.062],[.962,-.03]].map(function(p){return new THREE.Vector2(p[0],p[1]);});inPts.reverse();
+  var inRing=new THREE.Mesh(new THREE.LatheGeometry(inPts,160),new THREE.MeshPhysicalMaterial({color:0x6c6f77,metalness:1,roughness:.4,roughnessMap:turn,bumpMap:turn,bumpScale:.4,anisotropy:.6,anisotropyRotation:Math.PI/2,envMapIntensity:.8,side:THREE.DoubleSide}));
+  inRing.rotation.x=Math.PI/2;inRing.receiveShadow=true;iris.add(inRing);
+  var chPts=[[1.108,.066],[1.128,.05],[1.138,.03]].map(function(p){return new THREE.Vector2(p[0],p[1]);});chPts.reverse();
+  var chRing=new THREE.Mesh(new THREE.LatheGeometry(chPts,160),new THREE.MeshPhysicalMaterial({color:0x8f929a,metalness:1,roughness:.3,envMapIntensity:.9,side:THREE.DoubleSide}));
+  chRing.rotation.x=Math.PI/2;chRing.position.z=.0008;iris.add(chRing);
   /* engraved scale on the ring face */
   var eg=document.createElement("canvas");eg.width=eg.height=2048;
   (function(){
     var x=eg.getContext("2d"),c=1024;x.clearRect(0,0,2048,2048);x.translate(c,c);
     var rOut=c*1.075/1.14,rIn=c*1.0/1.14;
-    for(var i=0;i<120;i++){var a=i/120*Math.PI*2,long=i%10===0,mid=i%5===0;x.save();x.rotate(a);x.fillStyle="rgba(8,8,10,.92)";
-      var L=long?(rOut-rIn)*.78:mid?(rOut-rIn)*.55:(rOut-rIn)*.34,W=long?5:3;x.fillRect(-W/2,-(rOut-3),W,L);x.restore();}
-    x.font="600 34px Pretendard Variable, Pretendard, sans-serif";x.fillStyle="rgba(8,8,10,.9)";x.textAlign="center";x.textBaseline="middle";
-    var label="YURANGSTUDIO",rt=(rOut+rIn)/2-6;
-    for(var j=0;j<label.length;j++){var ang=(j-(label.length-1)/2)*.057;x.save();x.rotate(ang);x.translate(0,-rt);x.fillText(label[j],0,0);x.restore();}
+    for(var i=0;i<120;i++){var a=i/120*Math.PI*2,long=i%10===0,mid=i%5===0;x.save();x.rotate(a);x.fillStyle="rgba(222,225,231,.92)";x.shadowColor="rgba(0,0,0,.8)";x.shadowOffsetY=2;x.shadowBlur=2;
+      var L=long?26:mid?19:12,W=long?5:3;x.fillRect(-W/2,-(rOut-3),W,L);x.restore();}
+    x.font="700 33px Pretendard Variable, Pretendard, sans-serif";x.fillStyle="rgba(228,231,236,.95)";x.shadowColor="rgba(0,0,0,.85)";x.shadowOffsetY=2;x.shadowBlur=2;x.textAlign="center";x.textBaseline="middle";
+    var label="YURANGSTUDIO",rt=rIn+24;
+    for(var j=0;j<label.length;j++){var ang=(j-(label.length-1)/2)*.07;x.save();x.rotate(ang);x.translate(0,-rt);x.fillText(label[j],0,0);x.restore();}
   })();
   var egTex=new THREE.CanvasTexture(eg);egTex.colorSpace=THREE.SRGBColorSpace;egTex.anisotropy=8;
-  var egMesh=new THREE.Mesh(new THREE.CircleGeometry(1.14,128),new THREE.MeshBasicMaterial({map:egTex,transparent:true,depthWrite:false,toneMapped:false,opacity:.88}));
+  var egMesh=new THREE.Mesh(new THREE.CircleGeometry(1.14,128),new THREE.MeshBasicMaterial({map:egTex,transparent:true,depthWrite:false,toneMapped:false,opacity:1}));
   egMesh.position.z=.0752;iris.add(egMesh);
 
   /* ---- video + shadow catcher + glass ---- */
