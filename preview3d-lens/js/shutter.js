@@ -18,7 +18,7 @@ var DARK="#0B0B0D";
 var BGL=COL.map(function(c){return toLch(c.bg);}),INKL=COL.map(function(c){return toLch(c.ink);}),DARKL=toLch("#0B0B0D");
 var HS=[84,102,118,130,138],HMIN=3,HFULL=140,BW=.16,TOTAL=6;
 var FLAGS={irisBlink:false};if(window.YR_FLAGS){for(var fk in window.YR_FLAGS)FLAGS[fk]=window.YR_FLAGS[fk];}
-var VIDEO="media/promo.mp4",VIDEO_M="media/promo_m.mp4",POSTER="media/promo_poster.jpg"; /* studio promo film, one continuous muted loop */
+var VIDEO="media/promo.mp4",VIDEO_M="media/promo_m.mp4",POSTER="media/promo_poster.jpg",VSTART=3.4; /* studio promo film, one continuous muted loop */
 
 function clamp(v,a,b){return v<a?a:v>b?b:v;}
 function ss(a,b,v){var t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t);}
@@ -86,10 +86,12 @@ function setAperture(h){
 var vOK=false,vWant=false,vTried=false,seg=0;
 function vInit(){
   if(vTried)return;vTried=true;
-  video.muted=true;video.defaultMuted=true;video.playsInline=true;video.setAttribute("playsinline","");video.setAttribute("muted","");video.loop=true;video.poster=POSTER;
+  video.muted=true;video.defaultMuted=true;video.playsInline=true;video.setAttribute("playsinline","");video.setAttribute("muted","");video.loop=false;video.poster=POSTER;
   var fb=false;
   video.addEventListener("error",function(){if(small&&!fb){fb=true;video.src=VIDEO;video.load();}else vOK=false;});
-  video.addEventListener("loadedmetadata",function(){vOK=true;vSync();});
+  video.addEventListener("loadedmetadata",function(){vOK=true;try{video.currentTime=VSTART;}catch(e){}vSync();});
+  /* the film opens with a small typing animation; the loop skips it so the iris never shows a text box */
+  video.addEventListener("ended",function(){try{video.currentTime=VSTART;}catch(e){}vSync();var pr=video.play();if(pr&&pr.catch)pr.catch(function(){});});
   video.preload="metadata";
   video.src=small?VIDEO_M:VIDEO;
 }

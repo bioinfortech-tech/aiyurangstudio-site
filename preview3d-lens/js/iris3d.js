@@ -90,7 +90,7 @@ function start(THREE,RoomEnvironment){
   /* per-blade read: bright machined edge, darker toward the outside, so the overlapping leaves separate */
   bladeMat.onBeforeCompile=function(sh){
     sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <begin_vertex>','#include <begin_vertex>\nvLY=position.y+'+PY.toFixed(3)+'-'+D0.toFixed(3)+';');
-    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb*=mix(1.25,.55,smoothstep(0.,.55,vLY));').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=vec3(.2,.21,.24)*(1.-smoothstep(0.,.012,vLY))*step(-.02,vLY);');
+    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vLY;').replace('#include <color_fragment>','#include <color_fragment>\ndiffuseColor.rgb*=mix(1.25,.55,smoothstep(0.,.55,vLY));').replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\ntotalEmissiveRadiance+=vec3(.075,.08,.09)*(1.-smoothstep(0.,.05,vLY))*step(-.02,vLY);');
   };
   var LAYER=[0,1,2,3,4,5,6],Z0=-.04,DZ=.019;
   var blades=[],holders=[];
@@ -108,17 +108,17 @@ function start(THREE,RoomEnvironment){
   kn.rotation.x=Math.PI/2;kn.position.z=-.005;iris.add(kn);
   /* satin titanium inner ring between housing and blades, plus a thin bright chamfer line on the outer edge */
   var inPts=[[.915,-.03],[.915,.04],[.935,.062],[.962,.062],[.962,-.03]].map(function(p){return new THREE.Vector2(p[0],p[1]);});inPts.reverse();
-  var inRing=new THREE.Mesh(new THREE.LatheGeometry(inPts,160),new THREE.MeshPhysicalMaterial({color:0x6c6f77,metalness:1,roughness:.4,roughnessMap:turn,bumpMap:turn,bumpScale:.4,anisotropy:.6,anisotropyRotation:Math.PI/2,envMapIntensity:.8,side:THREE.DoubleSide}));
+  var inRing=new THREE.Mesh(new THREE.LatheGeometry(inPts,160),new THREE.MeshPhysicalMaterial({color:0x4f5259,metalness:1,roughness:.46,roughnessMap:turn,bumpMap:turn,bumpScale:.4,anisotropy:.6,anisotropyRotation:Math.PI/2,envMapIntensity:.5,side:THREE.DoubleSide}));
   inRing.rotation.x=Math.PI/2;inRing.receiveShadow=true;iris.add(inRing);
   var chPts=[[1.108,.066],[1.128,.05],[1.138,.03]].map(function(p){return new THREE.Vector2(p[0],p[1]);});chPts.reverse();
-  var chRing=new THREE.Mesh(new THREE.LatheGeometry(chPts,160),new THREE.MeshPhysicalMaterial({color:0x8f929a,metalness:1,roughness:.3,envMapIntensity:.9,side:THREE.DoubleSide}));
+  var chRing=new THREE.Mesh(new THREE.LatheGeometry(chPts,160),new THREE.MeshPhysicalMaterial({color:0x70737b,metalness:1,roughness:.38,envMapIntensity:.6,side:THREE.DoubleSide}));
   chRing.rotation.x=Math.PI/2;chRing.position.z=.0008;iris.add(chRing);
   /* engraved scale on the ring face */
   var eg=document.createElement("canvas");eg.width=eg.height=2048;
   (function(){
     var x=eg.getContext("2d"),c=1024;x.clearRect(0,0,2048,2048);x.translate(c,c);
     var rOut=c*1.075/1.14,rIn=c*1.0/1.14;
-    for(var i=0;i<120;i++){var a=i/120*Math.PI*2,long=i%10===0,mid=i%5===0;x.save();x.rotate(a);x.fillStyle="rgba(222,225,231,.92)";x.shadowColor="rgba(0,0,0,.8)";x.shadowOffsetY=2;x.shadowBlur=2;
+    for(var i=0;i<60;i++){var a=i/60*Math.PI*2,long=i%5===0,mid=i%5===0;x.save();x.rotate(a);x.fillStyle="rgba(222,225,231,.92)";x.shadowColor="rgba(0,0,0,.8)";x.shadowOffsetY=2;x.shadowBlur=2;
       var L=long?26:mid?19:12,W=long?5:3;x.fillRect(-W/2,-(rOut-3),W,L);x.restore();}
     x.font="700 33px Pretendard Variable, Pretendard, sans-serif";x.fillStyle="rgba(228,231,236,.95)";x.shadowColor="rgba(0,0,0,.85)";x.shadowOffsetY=2;x.shadowBlur=2;x.textAlign="center";x.textBaseline="middle";
     var label="YURANGSTUDIO",rt=rIn+24;
@@ -130,7 +130,11 @@ function start(THREE,RoomEnvironment){
 
   /* ---- video + shadow catcher + glass ---- */
   var vtex=new THREE.VideoTexture(video);vtex.colorSpace=THREE.SRGBColorSpace;vtex.minFilter=THREE.LinearFilter;vtex.magFilter=THREE.LinearFilter;vtex.generateMipmaps=false;
-  var vmat=clip(new THREE.MeshBasicMaterial({map:vtex,toneMapped:false,color:0xffffff}));
+  var pTex=new THREE.TextureLoader().load("media/promo_poster.jpg");pTex.colorSpace=THREE.SRGBColorSpace;
+  var vmat=clip(new THREE.MeshBasicMaterial({map:pTex,toneMapped:false,color:0xffffff}));
+  (function(){var a=16/9;pTex.repeat.set(1/a,1);pTex.offset.set((1-1/a)/2,0);})();
+  /* poster stands in until the film actually plays, so the aperture is never a black hole */
+  video.addEventListener("playing",function(){vmat.map=vtex;vmat.needsUpdate=true;});
   var vplane=new THREE.Mesh(new THREE.PlaneGeometry(2.4,2.4),vmat);vplane.position.z=-.14;iris.add(vplane);
   /* soft crossfade between clips: a snapshot of the outgoing frame fades away over the incoming one */
   var snapC=document.createElement("canvas");snapC.width=snapC.height=512;var snapCtx=snapC.getContext("2d");
