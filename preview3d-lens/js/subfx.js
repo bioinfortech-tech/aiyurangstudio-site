@@ -55,6 +55,7 @@ window.YR_FX={blink:blink};
 
 /* ---------- /work : AI, light particles + pixel-form ---------- */
 function themeAI(){
+  return; /* flat page background, no particle overlay */
   var head=document.querySelector(".pg-head");if(!head)return;
   var cv=document.createElement("canvas");cv.className="fx-ai";cv.setAttribute("aria-hidden","true");head.insertBefore(cv,head.firstChild);
   var ctx=cv.getContext("2d");if(!ctx)return;

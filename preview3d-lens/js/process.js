@@ -3,10 +3,11 @@
    Scroll-linked with smoothing. Nothing pops in, nothing blinks. Content stays in the DOM. */
 (function(){
 "use strict";
-var sec=document.getElementById("process"),row=document.getElementById("prRow"),panel=document.getElementById("prPanel"),bar=document.getElementById("prBar");
+var sec=document.getElementById("process"),row=document.getElementById("prRow"),panel=document.getElementById("prPanel");
 if(!sec||!row||!panel)return;
 var rm=document.documentElement.classList.contains("rm")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
-var pill=row.querySelector(".pr-pill"),lis=[].slice.call(row.querySelectorAll("li")),ds=[].slice.call(panel.querySelectorAll(".pr-d"));
+if(rm){sec.classList.add("pr-static");return;} /* reduced motion: static grid of the four panels (CSS) */
+var pill=row.querySelector(".pr-pill"),lis=[].slice.call(row.querySelectorAll("li")),ds=[].slice.call(panel.querySelectorAll(".pr-d")),arts=[].slice.call(panel.querySelectorAll(".pr-art"));
 var N=lis.length,L=[],W=[],cur=0,tgt=0,raf=0,last=performance.now(),secTop=0,len=1;
 function clamp(v,a,b){return v<a?a:v>b?b:v;}
 function sstep(t){t=clamp(t,0,1);return t*t*(3-2*t);}
@@ -33,10 +34,10 @@ function paint(t,pp){
   ds.forEach(function(d,k){
     var dd=k-t,a=Math.max(0,1-Math.abs(dd)*1.9);
     d.style.opacity=a.toFixed(3);
-    d.style.transform="translate3d(0,"+(dd*34).toFixed(1)+"px,0)";
+    
     d.style.visibility=a<.01?"hidden":"visible";
   });
-  bar.style.transform="scaleX("+((t/(N-1))).toFixed(4)+")";
+  arts.forEach(function(d,k){var a=Math.max(0,1-Math.abs(k-t));d.style.opacity=a.toFixed(3);d.style.visibility=a<.01?"hidden":"visible";});
 }
 function tick(now){
   raf=0;var dt=Math.min(.05,(now-last)/1000)||.016;last=now;
