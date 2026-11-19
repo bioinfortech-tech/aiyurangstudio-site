@@ -1949,3 +1949,5 @@ body .sv h3,body .px-body h3,body .cb h3,body .tx-steps h3,body .dr-meta b,body 
 .lv-top .sh .lab{grid-column:1;grid-row:1}.lv-top .sh h1{grid-column:2;grid-row:1;margin:0}
 .lv-top .seg{grid-column:1;grid-row:2}.lv-top .chips{grid-column:2;grid-row:2;min-width:0}
 @media (max-width:760px){.lv-top{grid-template-columns:1fr}.lv-top .sh .lab,.lv-top .sh h1,.lv-top .seg,.lv-top .chips{grid-column:1;grid-row:auto}}
+/* process: step text sits mid-height beside the frame, counter stays at the bottom */
+@media (min-width:761px){.pr-panel .pr-d .pr-p{margin-top:auto}.pr-panel .pr-d::after{margin-top:auto}}
