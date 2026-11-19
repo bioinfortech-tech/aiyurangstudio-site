@@ -4,7 +4,7 @@
 function __boot(){
 "use strict";
 var root=document.documentElement;
-var HERO_VIDEO="media/hero.mp4",HERO_VIDEO_M="media/hero_m.mp4"; /* phones try the lighter cut first, fall back to hero.mp4 */           /* optional: short muted loop placed behind the lens */
+var HERO_VIDEO=(window.YR_ROOT||"")+"media/hero.mp4",HERO_VIDEO_M=(window.YR_ROOT||"")+"media/hero_m.mp4"; /* phones try the lighter cut first, fall back to hero.mp4 */           /* optional: short muted loop placed behind the lens */
 var outer=document.getElementById("heroOuter"),hero=document.getElementById("hero"),cv=document.getElementById("gl");
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 function fail(){root.classList.add("nogl");}

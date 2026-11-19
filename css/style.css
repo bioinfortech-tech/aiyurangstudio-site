@@ -38,7 +38,7 @@ p{text-wrap:pretty}
 .mnav{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 var(--gut);gap:6px;opacity:0;visibility:hidden;transition:opacity .8s var(--ease),visibility .8s}
 .mnav.open{opacity:1;visibility:visible}
 .mnav a{font-size:34px;font-weight:500;letter-spacing:-.03em;padding:8px 0;border-bottom:1px solid var(--line)}
-.mnav a:last-child{color:var(--mute);border-bottom:0;font-size:20px;margin-top:12px}
+.mnav>a:last-of-type{color:var(--mute);border-bottom:0;font-size:20px;margin-top:12px}
 
 /* hero */
 .hero-outer{height:190vh;position:relative}
@@ -1951,3 +1951,22 @@ body .sv h3,body .px-body h3,body .cb h3,body .tx-steps h3,body .dr-meta b,body 
 @media (max-width:760px){.lv-top{grid-template-columns:1fr}.lv-top .sh .lab,.lv-top .sh h1,.lv-top .seg,.lv-top .chips{grid-column:1;grid-row:auto}}
 /* process: step text sits mid-height beside the frame, counter stays at the bottom */
 @media (min-width:761px){.pr-panel .pr-d .pr-p{margin-top:auto}.pr-panel .pr-d::after{margin-top:auto}}
+
+/* language switch (KO / EN / JA / 中文) */
+.nav .lang{display:inline-flex;align-items:center;gap:0;margin-left:clamp(0px,.4vw,6px);font-size:12px;letter-spacing:.08em}
+.nav .lang a{display:inline-block;padding:6px 0}
+.nav .lang a+a{margin-left:17px}
+.nav .lang a+a::before{content:"/";position:absolute;left:-11px;top:50%;transform:translateY(-52%);color:var(--dim);opacity:.6;pointer-events:none}
+.mnav .lang{display:flex;flex-wrap:wrap;gap:6px 24px;margin-top:20px}
+.mnav .lang a{font-size:15px;font-weight:500;letter-spacing:.08em;padding:8px 0;border-bottom:0;margin:0;color:var(--mute)}
+.mnav .lang a[aria-current]{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.hdr.lt .nav .lang a+a::before{color:#0B0F14}
+/* per-language typography and strings */
+html[lang=ja]{--serif-kr:"Instrument Serif","Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif}
+html[lang=zh-CN]{--serif-kr:"Instrument Serif","Noto Serif SC","Songti SC","STSong",serif}
+html[lang=ja] body,html[lang=zh-CN] body{word-break:normal;line-break:strict}
+html[lang=ja] h1,html[lang=ja] h2,html[lang=ja] h3,html[lang=ja] .ch,html[lang=zh-CN] h1,html[lang=zh-CN] h2,html[lang=zh-CN] h3,html[lang=zh-CN] .ch{letter-spacing:0}
+html[lang=en] .tx-custom .cb::after{content:"+ Added"}
+html[lang=ja] .tx-custom .cb::after{content:"+ 追加済み"}
+html[lang=zh-CN] .tx-custom .cb::after{content:"+ 已添加"}
+html:not([lang=ko]) .pi-meta .n{flex:none;white-space:nowrap}

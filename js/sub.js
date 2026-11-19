@@ -1,19 +1,20 @@
 /* detail pages: nav, reveal, work grid + filter + modal, tools extras */
 (function(){
 "use strict";
+var YRS=window.YR_S||{play:function(t){return t+" 재생";},menuOpen:"메뉴 열기",menuClose:"메뉴 닫기",all:"전체",cats:{brand:"광고 · 브랜드",product:"제품",vh:"버추얼 휴먼",short:"숏폼"},notes:["컷 길이 조정","색감 확인","자막 위치","BGM 볼륨"]};
 var root=document.documentElement,rm=root.classList.contains("rm");
 function $(id){return document.getElementById(id);}
 function pad(n){return (n<10?"0":"")+n;}
 /* nav */
 var burger=$("burger"),mnav=$("mnav");
-function setMenu(o){mnav.classList.toggle("open",o);burger.setAttribute("aria-expanded",o);burger.setAttribute("aria-label",o?"메뉴 닫기":"메뉴 열기");document.body.style.overflow=o?"hidden":"";}
+function setMenu(o){mnav.classList.toggle("open",o);burger.setAttribute("aria-expanded",o);burger.setAttribute("aria-label",o?YRS.menuClose:YRS.menuOpen);document.body.style.overflow=o?"hidden":"";}
 burger.addEventListener("click",function(){setMenu(!mnav.classList.contains("open"));});
 mnav.addEventListener("click",function(e){if(e.target.closest("a"))setMenu(false);});
 /* work */
 var pg=$("pg");
 var LIVE=document.body.getAttribute("data-list")==="live";
 if(pg&&(LIVE?window.YR_L:window.YR_V)){
-  var V=LIVE?window.YR_L:window.YR_V,CATS=LIVE&&window.YR_LC?window.YR_LC:[["all","전체"],["brand","광고 · 브랜드"],["product","제품"],["vh","버추얼 휴먼"],["short","숏폼"]];
+  var V=LIVE?window.YR_L:window.YR_V,CATS=LIVE&&window.YR_LC?window.YR_LC:[["all",YRS.all],["brand",YRS.cats.brand],["product",YRS.cats.product],["vh",YRS.cats.vh],["short",YRS.cats.short]];
   var m=$("modal"),host=$("mhost"),lastFocus=null;
   var openM=function(id,cat,t,d){lastFocus=document.activeElement;
     host.innerHTML='<iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1" title="'+t+'" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
@@ -35,7 +36,7 @@ if(pg&&(LIVE?window.YR_L:window.YR_V)){
   var wrapB=function(fn){return function(){var a=arguments,t=this;if(window.YR_FX&&window.YR_FX.blink)window.YR_FX.blink(function(){fn.apply(t,a);});else fn.apply(t,a);};};
   openM=wrapB(_o);closeM=wrapB(_c);
   var items=V.map(function(v,i){
-    var b=document.createElement("button");b.type="button";b.className="pi";b.setAttribute("aria-label",v[3]+" 재생");
+    var b=document.createElement("button");b.type="button";b.className="pi";b.setAttribute("aria-label",YRS.play(v[3]));
     var src="https://img.youtube.com/vi/"+v[0]+"/maxresdefault.jpg";
     b.innerHTML='<span class="pi-img"><img loading="lazy" decoding="async" alt="" src="'+src+'"><span class="pi-play"></span></span><span class="pi-meta"><span class="n">'+pad(i+1)+'</span><b>'+v[3]+'</b><em>'+v[2]+'</em></span>';
     var img=b.querySelector("img");
@@ -62,7 +63,7 @@ if(pg&&(LIVE?window.YR_L:window.YR_V)){
 /* tools: waveform + review pin */
 var wv=$("wv"),NS="http://www.w3.org/2000/svg";
 if(wv){for(var i=0;i<54;i++){var r=document.createElementNS(NS,"rect"),h=6+Math.abs(Math.sin(i*.9)*Math.cos(i*.31))*20;r.setAttribute("x",40+i*7.7);r.setAttribute("width",3);r.setAttribute("y",244-h/2);r.setAttribute("height",h);r.style.animationDelay=(i%9)*.15+"s";wv.appendChild(r);}}
-var fr=$("rvFrame"),svg=$("rvSvg"),pin=$("rvPin"),head=$("rvHead"),tc=$("rvTc"),tx=$("rvTxt"),notes=["컷 길이 조정","색감 확인","자막 위치","BGM 볼륨"],ni=0;
+var fr=$("rvFrame"),svg=$("rvSvg"),pin=$("rvPin"),head=$("rvHead"),tc=$("rvTc"),tx=$("rvTxt"),notes=YRS.notes,ni=0;
 if(fr){fr.addEventListener("click",function(e){
   var r=svg.getBoundingClientRect(),k=480/r.width,x=(e.clientX-r.left)*k,y=(e.clientY-r.top)*k;
   x=Math.max(34,Math.min(x,336));y=Math.max(34,Math.min(y,170));

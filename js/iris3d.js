@@ -130,7 +130,7 @@ function start(THREE,RoomEnvironment){
 
   /* ---- video + shadow catcher + glass ---- */
   var vtex=new THREE.VideoTexture(video);vtex.colorSpace=THREE.SRGBColorSpace;vtex.minFilter=THREE.LinearFilter;vtex.magFilter=THREE.LinearFilter;vtex.generateMipmaps=false;
-  var pTex=new THREE.TextureLoader().load("media/promo_poster.jpg");pTex.colorSpace=THREE.SRGBColorSpace;
+  var pTex=new THREE.TextureLoader().load((window.YR_ROOT||"")+"media/promo_poster.jpg");pTex.colorSpace=THREE.SRGBColorSpace;
   var vmat=clip(new THREE.MeshBasicMaterial({map:pTex,toneMapped:false,color:0xffffff}));
   (function(){var a=16/9;pTex.repeat.set(1/a,1);pTex.offset.set((1-1/a)/2,0);})();
   /* poster stands in until the film actually plays, so the aperture is never a black hole */

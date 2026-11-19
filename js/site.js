@@ -4,6 +4,7 @@
 /* ---- one-line swaps ---- */
 var HEADLINES=["상상만 하던 장면,|유랑이 현실로 만듭니다.","세상에 없던 컷을|만듭니다.","유랑이 만들면,|장면이 다릅니다.","AI가 그리고,|우리가 연출합니다.","보는 순간,|기억되는 영상."];
 var HEADLINE_INDEX=0;
+var YRS=window.YR_S||{play:function(t){return t+" 재생";},menuOpen:"메뉴 열기",menuClose:"메뉴 닫기",sending:"전송 중",send:"문의 보내기",okH:"문의가 접수되었습니다.",okP:"확인 후 직접 연락드리겠습니다.",err:"전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",net:"네트워크 오류입니다. 연결을 확인해주세요.",notes:["컷 길이 조정","색감 확인","자막 위치","BGM 볼륨"],showreel:"유랑스튜디오 쇼릴"};
 var SHOWREEL_YT="";   /* YouTube id for the SHOWREEL block, e.g. "abc123XYZ_-" */
 
 var V=window.YR_V||[];
@@ -20,7 +21,7 @@ function pad(n){return (n<10?"0":"")+n;}
 var PREVIEW=6;
 if(pf)V.slice(0,PREVIEW).forEach(function(v,i){
   var b=document.createElement("button");b.type="button";b.className="pi rv"+(i<2?" big":"");
-  b.setAttribute("aria-label",v[3]+" 재생");
+  b.setAttribute("aria-label",YRS.play(v[3]));
   var src="https://img.youtube.com/vi/"+v[0]+"/maxresdefault.jpg";
   b.innerHTML='<span class="pi-img"><img loading="lazy" decoding="async" alt="" src="'+src+'"><span class="pi-play"></span></span><span class="pi-meta"><span class="n">'+pad(i+1)+'</span><b>'+v[3]+'</b><em>'+v[2]+'</em></span>';
   var img=b.querySelector("img");
@@ -87,27 +88,27 @@ var fr=document.getElementById("srFrame");
 if(fr&&SHOWREEL_YT){var _s=document.getElementById("showreel");if(_s)_s.hidden=false;
   fr.setAttribute("data-yt",SHOWREEL_YT);fr.classList.add("live");
   var hostEl=document.getElementById("srHost");
-  hostEl.innerHTML='<img alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" src="https://img.youtube.com/vi/'+SHOWREEL_YT+'/maxresdefault.jpg"><button type="button" class="pi" style="position:absolute;inset:0" aria-label="쇼릴 재생"><span class="pi-play" style="opacity:1;transform:none"></span></button>';
-  hostEl.querySelector("button").addEventListener("click",function(){openM(SHOWREEL_YT,"Showreel","유랑스튜디오 쇼릴","");});
+  hostEl.innerHTML='<img alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" src="https://img.youtube.com/vi/'+SHOWREEL_YT+'/maxresdefault.jpg"><button type="button" class="pi" style="position:absolute;inset:0" aria-label="'+YRS.play("Showreel")+'"><span class="pi-play" style="opacity:1;transform:none"></span></button>';
+  hostEl.querySelector("button").addEventListener("click",function(){openM(SHOWREEL_YT,"Showreel",YRS.showreel,"");});
 }
 
 /* form */
 var f=document.getElementById("quoteForm"),fb=document.getElementById("formBody");
-var SENDHTML='<span>문의 보내기</span><i aria-hidden="true"></i>';
+var SENDHTML='<span>'+YRS.send+'</span><i aria-hidden="true"></i>';
 f.addEventListener("submit",function(ev){
   ev.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}
-  var b=f.querySelector("button[type=submit]");b.disabled=true;b.innerHTML="<span>전송 중</span>";
+  var b=f.querySelector("button[type=submit]");b.disabled=true;b.innerHTML="<span>"+YRS.sending+"</span>";
   fetch("https://formspree.io/f/mnjyjgkw",{method:"POST",body:new FormData(f),headers:{"Accept":"application/json"}}).then(function(r){
-    if(r.ok){fb.innerHTML='<div class="ok"><h3>문의가 접수되었습니다.</h3><p>확인 후 직접 연락드리겠습니다.</p></div>';}
-    else{b.disabled=false;b.innerHTML=SENDHTML;alert("전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");}
-  }).catch(function(){b.disabled=false;b.innerHTML=SENDHTML;alert("네트워크 오류입니다. 연결을 확인해주세요.");});
+    if(r.ok){fb.innerHTML='<div class="ok"><h3>'+YRS.okH+'</h3><p>'+YRS.okP+'</p></div>';}
+    else{b.disabled=false;b.innerHTML=SENDHTML;alert(YRS.err);}
+  }).catch(function(){b.disabled=false;b.innerHTML=SENDHTML;alert(YRS.net);});
 });
 
 /* nav */
 var hdr=document.getElementById("hdr"),burger=document.getElementById("burger"),mnav=document.getElementById("mnav");
 function onS(){hdr.classList.toggle("solid",window.scrollY>40);}
 addEventListener("scroll",onS,{passive:true});onS();
-function setMenu(o){mnav.classList.toggle("open",o);burger.setAttribute("aria-expanded",o);burger.setAttribute("aria-label",o?"메뉴 닫기":"메뉴 열기");document.body.style.overflow=o?"hidden":"";}
+function setMenu(o){mnav.classList.toggle("open",o);burger.setAttribute("aria-expanded",o);burger.setAttribute("aria-label",o?YRS.menuClose:YRS.menuOpen);document.body.style.overflow=o?"hidden":"";}
 burger.addEventListener("click",function(){setMenu(!mnav.classList.contains("open"));});
 mnav.addEventListener("click",function(e){if(e.target.closest("a"))setMenu(false);});
 document.addEventListener("click",function(e){
@@ -152,7 +153,7 @@ document.addEventListener("click",function(e){
   if(wv){for(var i=0;i<54;i++){var r=document.createElementNS(NS,"rect"),h=6+Math.abs(Math.sin(i*.9)*Math.cos(i*.31))*20;r.setAttribute("x",40+i*7.7);r.setAttribute("width",3);r.setAttribute("y",244-h/2);r.setAttribute("height",h);r.style.animationDelay=(i%9)*.15+"s";wv.appendChild(r);}}
   /* review: click the frame to drop a timecode pin */
   var fr=document.getElementById("rvFrame"),svg=document.getElementById("rvSvg"),pin=document.getElementById("rvPin"),head=document.getElementById("rvHead"),tc=document.getElementById("rvTc"),tx=document.getElementById("rvTxt");
-  var notes=["컷 길이 조정","색감 확인","자막 위치","BGM 볼륨"];var ni=0;
+  var notes=YRS.notes;var ni=0;
   if(fr){fr.addEventListener("click",function(e){
     var r=svg.getBoundingClientRect(),k=480/r.width,x=(e.clientX-r.left)*k,y=(e.clientY-r.top)*k;
     x=Math.max(34,Math.min(x,336));y=Math.max(34,Math.min(y,170));

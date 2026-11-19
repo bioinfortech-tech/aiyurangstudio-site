@@ -15,10 +15,11 @@
 var scenes=[].slice.call(document.querySelectorAll(".cbs"));if(!scenes.length)return;
 var rm=document.documentElement.classList.contains("rm")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
 if(rm)return;
+var W=window.YR_S||{shop:"우리 가게",today:"오늘 예약 가능",book:"예약하기",shopBook:"우리 가게 예약"};
 var T="t",A="a",S="s",P="p",X="x"; /* tag, attr, string, punct, text */
 var SNIP={
-  mini:[[[T,"<main>"]],[[X,"  "],[T,"<header>"],[X,"우리 가게"],[T,"</header>"]],[[X,"  "],[T,"<p>"],[X,"오늘 예약 가능"],[T,"</p>"]],[[X,"  "],[T,"<button>"],[X,"예약하기"],[T,"</button>"]],[[X,"  "],[A,"onclick"],[P," = "],[X,"book"],[P,"();"]],[[T,"</main>"]]],
-  hero:[[[A,"function "],[X,"Booking"],[P,"() {"]],[[X,"  "],[A,"return "],[P,"("]],[[X,"    "],[T,"<section "],[A,"class"],[P,"="],[S,'"hero"'],[T,">"]],[[X,"      "],[T,"<h1>"],[X,"우리 가게 예약"],[T,"</h1>"]],[[X,"      "],[T,"<button "],[A,"onClick"],[P,"={"],[X,"book"],[P,"}"],[T,">"]],[[X,"        예약하기"]],[[X,"      "],[T,"</button>"]],[[X,"    "],[T,"</section>"]],[[P,"  );"]],[[P,"}"]]]
+  mini:[[[T,"<main>"]],[[X,"  "],[T,"<header>"],[X,W.shop],[T,"</header>"]],[[X,"  "],[T,"<p>"],[X,W.today],[T,"</p>"]],[[X,"  "],[T,"<button>"],[X,W.book],[T,"</button>"]],[[X,"  "],[A,"onclick"],[P," = "],[X,"book"],[P,"();"]],[[T,"</main>"]]],
+  hero:[[[A,"function "],[X,"Booking"],[P,"() {"]],[[X,"  "],[A,"return "],[P,"("]],[[X,"    "],[T,"<section "],[A,"class"],[P,"="],[S,'"hero"'],[T,">"]],[[X,"      "],[T,"<h1>"],[X,W.shopBook],[T,"</h1>"]],[[X,"      "],[T,"<button "],[A,"onClick"],[P,"={"],[X,"book"],[P,"}"],[T,">"]],[[X,"        "+W.book]],[[X,"      "],[T,"</button>"]],[[X,"    "],[T,"</section>"]],[[P,"  );"]],[[P,"}"]]]
 };
 function build(sc){
   var code=sc.querySelector(".cbs-code"),snip=SNIP[sc.getAttribute("data-snip")||"mini"],gen=0,vis=false,timer=0,run=false;
