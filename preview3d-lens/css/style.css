@@ -29,8 +29,6 @@ p{text-wrap:pretty}
 .nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease)}
 .nav a:hover,.nav a[aria-current]{color:var(--ink)}.nav a:hover::after,.nav a[aria-current]::after{transform:scaleX(1)}
 .mnav a[aria-current=true]{color:var(--ink)}
-.nav .fb{color:var(--ink);padding-left:clamp(22px,2.6vw,40px);margin-left:2px;border-left:1px solid var(--line)}
-.nav .fb::after{left:clamp(22px,2.6vw,40px)}
 .nav sup{font-size:10px;margin-left:3px;opacity:.7}
 .burger{display:none;width:44px;height:44px;position:relative;margin-right:-10px}
 .burger i{position:absolute;left:12px;right:12px;height:1px;background:var(--ink);transition:transform .7s var(--ease)}
@@ -189,7 +187,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   .st{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:48px}
   .st .n{margin-bottom:28px}
   .ct{grid-template-columns:minmax(0,1fr)}
-  .nav a:not(.fb){display:none}.nav .fb{border:0;padding:0;margin:0}.nav .fb::after{left:0}
+  .nav a{display:none}
   .nav{margin-right:56px}
 }
 @media (max-width:760px){
