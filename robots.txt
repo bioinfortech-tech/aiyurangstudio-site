@@ -1,0 +1,89 @@
+User-agent: GPTBot
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: Yeti
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: Daum
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+User-agent: *
+Allow: /
+Disallow: /old/
+Disallow: /preview3d/
+Disallow: /preview3d-lens/
+Disallow: /dubu-uploader/
+Disallow: /_drafts/
+
+Sitemap: https://www.yurangstudio.com/sitemap.xml

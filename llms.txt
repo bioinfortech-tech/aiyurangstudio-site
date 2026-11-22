@@ -1,0 +1,32 @@
+# YURANGSTUDIO (유랑스튜디오)
+
+> YURANGSTUDIO is a film and software studio based in Yongin-si, Korea. It makes AI films and live-action videos, and builds custom programs and web pages, including the tools it uses to make its own films. 유랑스튜디오는 AI 영상과 실사 촬영 영상을 제작하고, 맞춤 프로그램과 웹페이지를 개발하는 영상 + 소프트웨어 스튜디오입니다.
+
+The brand name is always written "YURANGSTUDIO" (one word, Latin letters); the Korean name is 유랑스튜디오. The site is available in Korean, English, Japanese and Simplified Chinese.
+
+## What the studio does
+
+- AI films: advertising and brand films, product videos, virtual humans, short-form videos, and retouching/upscaling of existing footage.
+- Live-action filming: documentaries, interviews and promotional videos.
+- Programs and web pages: custom homepages and landing pages, work-automation programs, and simple internal tools; simple games on request. Programs the studio built itself include a privacy-focused browser, a remote-desktop helper and an automatic video editing program (AutoEditor).
+- Process: planning, storyboard, production, finishing (color and sound).
+
+## Contact
+
+- Email: yurangstudio@gmail.com
+- Phone: 010-9718-8291
+- Address: B1, 8-4 Yonggu-daero 2790beon-gil, Suji-gu, Yongin-si, Korea
+- Project inquiries: https://www.yurangstudio.com/#contact
+
+## Main pages (Korean)
+
+- [Home](https://www.yurangstudio.com/): studio overview, services, process, contact
+- [Work: AI films](https://www.yurangstudio.com/work/): ad, brand, product and campaign videos
+- [Work: Live action](https://www.yurangstudio.com/work/live/): documentaries, interviews, promotional videos
+- [Programs and web development](https://www.yurangstudio.com/tools/): custom builds and programs made by the studio
+
+## Other languages
+
+- English: https://www.yurangstudio.com/en/
+- 日本語: https://www.yurangstudio.com/ja/
+- 简体中文: https://www.yurangstudio.com/zh/
